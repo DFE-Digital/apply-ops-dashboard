@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Apply deploys</title>
+    <link rel='stylesheet' href='/govuk-frontend-3.4.0.min.css'>
+    <link rel='stylesheet' href='/styles.css'>
+  </head>
+  <body>
+    <div class='govuk-grid-row'>
+      <% %w[qa staging production sandbox pentest].each do |environment| %>
+      <% latest_deploy = state.latest_deploy_to(environment) %>
+
+      <div class='deploy-environment govuk-grid-column-one-quarter deploy-environment--<%= environment %>'>
+        <h2 class='govuk-heading-xl'><%= environment %></h2>
+        <div class='govuk-body govuk-!-font-size-27'>
+          last deploy on
+          <%= latest_deploy[:start].strftime('%m/%d/%Y %I:%M%p') %>
+          by <%= latest_deploy[:deployer] %>
+          (<%= latest_deploy[:commit][0..6] %>)
+        </div>
+
+        <h2 class='govuk-heading-m'><%= state.unreleased_pull_requests_since(latest_deploy[:commit]).size %> undeployed PRs</h2>
+
+        <ul class='govuk-list'>
+          <% state.unreleased_pull_requests_since(latest_deploy[:commit]).each do |author, title| %>
+            <li><%= title %> (<%= author %>)</li>
+          <% end %>
+        </ul>
+
+        <div class='govuk-body'>
+          <a href='https://github.com/DFE-Digital/apply-for-postgraduate-teacher-training/compare/<%= latest_deploy[:commit] %>...master' class='govuk-body govuk-!-font-size-19'>full diff</a>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </body>
+</html>

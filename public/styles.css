@@ -1,0 +1,30 @@
+.deploy-environment {
+  padding: 20px;
+}
+
+.deploy-environment--qa {
+  background-color: #f47738;
+}
+
+.deploy-environment--staging {
+  background-color: #d4351c;
+}
+
+.deploy-environment--production {
+  background-color: #1d70b8;
+}
+
+.deploy-environment--sandbox {
+  background-color: #4c2c92;
+}
+
+.deploy-environment--pentest {
+  background-color: #0b0c0c;
+}
+
+.deploy-environment a,
+.deploy-environment h2,
+.deploy-environment .govuk-body,
+.deploy-environment .govuk-list {
+  color: #fff;
+}
