@@ -23,12 +23,39 @@ class State
     }
   end
 
-  def latest_deploy_to_qa
-    @latest_deploy_to_qa ||= qa_deployments.find { |s| s[:result] == "succeeded" }
+  def latest_deploy_to(environment)
+    return latest_deploy_to_qa if environment == 'qa'
+
+    relevant_builds.find do |build|
+      build[:params]["deploy_#{environment}"] == "true"
+    end
   end
 
-# https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1
-  def qa_deployments
+  def relevant_builds
+    convert(raw_builds)
+  end
+
+private
+
+  def latest_deploy_to_qa
+    @latest_deploy_to_qa ||= qa_builds.find { |s| s[:result] == "succeeded" }
+  end
+
+  def convert(builds)
+    builds.map do |b|
+      {
+        start: DateTime.parse(b['queueTime']),
+        result: b['result'],
+        deployer: b['requestedBy']['displayName'],
+        params: b['parameters'] ? JSON.parse(b['parameters']) : nil,
+        link: b['_links']['web']['href'],
+        commit: b['sourceVersion'],
+      }
+    end
+  end
+
+  # https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1
+  def qa_builds
     organization = 'dfe-ssp'
     project = 'Become-A-Teacher'
 
@@ -47,33 +74,6 @@ class State
     x = JSON.parse(api_response)['value']
     convert(x.sort_by { |b| b["queueTime"] }.reverse)
   end
-
-  def latest_deploy_to(environment)
-    return latest_deploy_to_qa if environment == 'qa'
-
-    relevant_builds.find do |build|
-      build[:params]["deploy_#{environment}"] == "true"
-    end
-  end
-
-  def relevant_builds
-    convert(raw_builds)
-  end
-
-  def convert(builds)
-    builds.map do |b|
-      {
-        start: DateTime.parse(b['queueTime']),
-        result: b['result'],
-        deployer: b['requestedBy']['displayName'],
-        params: b['parameters'] ? JSON.parse(b['parameters']) : nil,
-        link: b['_links']['web']['href'],
-        commit: b['sourceVersion'],
-      }
-    end
-  end
-
-private
 
   def raw_builds
     @raw_builds ||= begin
