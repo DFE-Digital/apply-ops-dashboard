@@ -1,3 +1,7 @@
+body {
+  margin: 0;
+}
+
 .deploy-environment {
   padding: 20px;
 }
@@ -7,7 +11,7 @@
 }
 
 .deploy-environment--staging {
-  background-color: #d4351c;
+  background-color: #5694ca;
 }
 
 .deploy-environment--production {
@@ -26,5 +30,16 @@
 .deploy-environment h2,
 .deploy-environment .govuk-body,
 .deploy-environment .govuk-list {
+  color: #fff;
+}
+
+.app-banner {
+  text-align: center;
+  padding: 50px 0;
+  margin: 0;
+}
+
+.app-banner--bad {
+  background-color: #d4351c;
   color: #fff;
 }
