@@ -8,17 +8,17 @@
 
 <% if state.deploying_to_staging? %>
 <div class='govuk-grid-row'>
-  <h2 class='govuk-heading-xl app-banner app-banner--progress'>
+  <a href='<%= state.latest_build_to('staging').link %>' class='govuk-heading-xl app-banner app-banner--progress'>
     🐓 <%= state.latest_build_to('staging').deployer_name %> is deploying to staging!
-  </h2>
+  </a>
 </div>
 <% end %>
 
 <% if state.deploying_to_production? %>
 <div class='govuk-grid-row'>
-  <h2 class='govuk-heading-xl app-banner app-banner--progress'>
+  <a href='<%= state.latest_build_to('production').link %>' class='govuk-heading-xl app-banner app-banner--progress'>
     🕺 <%= state.latest_build_to('production').deployer_name %> is deploying to production!
-  </h2>
+  </a>
 </div>
 <% elsif state.staging_and_production_not_in_sync? %>
 <div class='govuk-grid-row'>
