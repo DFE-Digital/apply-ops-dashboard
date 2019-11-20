@@ -23,13 +23,9 @@ class State
   def latest_deploy_to(environment)
     return latest_successfull_deploy_to_qa if environment == 'qa'
 
-    relevant_builds.find do |build|
+    release_builds.find do |build|
       build[:params]["deploy_#{environment}"] == "true"
     end
-  end
-
-  def relevant_builds
-    convert(raw_builds)
   end
 
 private
@@ -38,59 +34,55 @@ private
     @latest_successfull_deploy_to_qa ||= qa_builds.find { |s| s[:result] == "succeeded" }
   end
 
-  def convert(builds)
-    builds.map do |b|
-      {
-        start: DateTime.parse(b['queueTime']),
-        result: b['result'],
-        deployer: b['requestedBy']['displayName'],
-        params: b['parameters'] ? JSON.parse(b['parameters']) : nil,
-        link: b['_links']['web']['href'],
-        commit: b['sourceVersion'],
-      }
-    end
-  end
-
-  # https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1
   def qa_builds
     @qa_builds ||= begin
-      organization = 'dfe-ssp'
-      project = 'Become-A-Teacher'
-
       params = {
         'api-version' => '5.1',
-        'definitions' => 49, # releases pipeline ID
+        'definitions' => 49, # CI pipeline ID
         'branchName' => 'refs/heads/master',
       }
 
-      api_response = HTTP
-        .basic_auth(user: ENV.fetch("AZURE_USERNAME"), pass: ENV.fetch("AZURE_ACCESS_TOKEN"))
-        .get(
-        "https://dev.azure.com/#{organization}/#{project}/_apis/build/builds", params: params
-      )
-
-      x = JSON.parse(api_response)['value']
-      convert(x.sort_by { |b| b["queueTime"] }.reverse)
+      Azure.get("/build/builds", params)
     end
   end
 
-  def raw_builds
+  def release_builds
     @raw_builds ||= begin
-      organization = 'dfe-ssp'
-      project = 'Become-A-Teacher'
-
       params = {
         'api-version' => '5.1',
-        'definitions' => 325, # releases pipeline ID
+        'definitions' => 325, # release pipeline ID
       }
 
+      Azure.get("/build/builds", params)
+    end
+  end
+
+  class Azure
+    ORGANISATION = 'dfe-ssp'
+    PROJECT = 'Become-A-Teacher'
+
+    def self.get(path, params)
       api_response = HTTP
         .basic_auth(user: ENV.fetch("AZURE_USERNAME"), pass: ENV.fetch("AZURE_ACCESS_TOKEN"))
         .get(
-        "https://dev.azure.com/#{organization}/#{project}/_apis/build/builds", params: params
+        "https://dev.azure.com/#{ORGANISATION}/#{PROJECT}/_apis#{path}", params: params
       )
 
-      JSON.parse(api_response)['value']
+      builds = JSON.parse(api_response)['value'].sort_by { |b| b["queueTime"] }.reverse
+      convert(builds)
+    end
+
+    def self.convert(builds)
+      builds.map do |b|
+        {
+          start: DateTime.parse(b['queueTime']),
+          result: b['result'],
+          deployer: b['requestedBy']['displayName'],
+          params: b['parameters'] ? JSON.parse(b['parameters']) : nil,
+          link: b['_links']['web']['href'],
+          commit: b['sourceVersion'],
+        }
+      end
     end
   end
 
