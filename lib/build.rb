@@ -36,8 +36,12 @@ class Build
     azure_build['sourceVersion']
   end
 
+  def diff_against_url(other_sha)
+    "https://github.com/DFE-Digital/apply-for-postgraduate-teacher-training/compare/#{commit_sha}...#{other_sha}"
+  end
+
   def diff_against_master_url
-    "https://github.com/DFE-Digital/apply-for-postgraduate-teacher-training/compare/#{commit_sha}...master"
+    diff_against_url('master')
   end
 
 private

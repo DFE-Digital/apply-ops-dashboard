@@ -3,6 +3,7 @@ require 'yaml'
 require_relative 'azure'
 require_relative 'github'
 require_relative 'build'
+require_relative 'diff'
 
 class State
   def master_broken?
@@ -23,18 +24,6 @@ class State
 
   def staging_and_production_not_in_sync?
     latest_successfull_build_to('staging').commit_sha != latest_successfull_build_to('production').commit_sha
-  end
-
-  def unreleased_pull_requests_since(commit_sha)
-    @compares ||= {}
-    @compares[commit_sha] ||= GitHub.client.compare('DFE-Digital/apply-for-postgraduate-teacher-training', commit_sha, "master")
-    compare = @compares[commit_sha]
-
-    compare[:commits].select { |commit|
-      commit[:commit][:message].start_with?("Merge pull request")
-    }.compact.map { |commit|
-      [commit.to_h.dig(:commit, :author, :name), commit[:commit][:message].lines.last]
-    }
   end
 
   def latest_build_to(environment)

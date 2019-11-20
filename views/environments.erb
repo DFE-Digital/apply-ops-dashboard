@@ -9,22 +9,13 @@
       last deploy on
       <%= latest_build.start_time %>
       by <%= latest_build.deployer_name %>
-      <code><%= latest_build.commit_sha[0..6] %></code>
     </div>
-
-    <h2 class='govuk-heading-m'>
-      <%= state.unreleased_pull_requests_since(latest_build.commit_sha).size %> undeployed PRs
-    </h2>
-
-    <ul class='govuk-list'>
-      <% state.unreleased_pull_requests_since(latest_build.commit_sha).each do |author, title| %>
-        <li><%= title %> (<%= author %>)</li>
-      <% end %>
-    </ul>
 
     <div class='govuk-body'>
-      <a href='<%= latest_build.diff_against_master_url %>' class='govuk-body govuk-!-font-size-19'>diff against master</a>
+      Current SHA: <code><%= latest_build.commit_sha[0..6] %></code>
     </div>
+
+    <%= erb :deploy, locals: { environment: environment, state: state, latest_build: latest_build } %>
   </div>
   <% end %>
 </div>
