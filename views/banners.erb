@@ -9,7 +9,7 @@
 <% if state.deploying_to_staging? %>
 <div class='govuk-grid-row'>
   <h2 class='govuk-heading-xl app-banner app-banner--progress'>
-    🐓 Deploying to staging!
+    🐓 <%= state.latest_deploy_to('staging').deployer_name %> is deploying to staging!
   </h2>
 </div>
 <% end %>
