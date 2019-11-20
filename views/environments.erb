@@ -7,21 +7,21 @@
 
     <div class='govuk-body govuk-!-font-size-27'>
       last deploy on
-      <%= latest_deploy[:start].strftime('%m/%d/%Y %I:%M%p') %>
-      by <%= latest_deploy[:deployer] %>
-      <code><%= latest_deploy[:commit] %></code>
+      <%= latest_deploy.start_time %>
+      by <%= latest_deploy.deployer_name %>
+      <code><%= latest_deploy.commit_sha %></code>
     </div>
 
-    <h2 class='govuk-heading-m'><%= state.unreleased_pull_requests_since(latest_deploy[:commit]).size %> undeployed PRs</h2>
+    <h2 class='govuk-heading-m'><%= state.unreleased_pull_requests_since(latest_deploy.commit_sha).size %> undeployed PRs</h2>
 
     <ul class='govuk-list'>
-      <% state.unreleased_pull_requests_since(latest_deploy[:commit]).each do |author, title| %>
+      <% state.unreleased_pull_requests_since(latest_deploy.commit_sha).each do |author, title| %>
         <li><%= title %> (<%= author %>)</li>
       <% end %>
     </ul>
 
     <div class='govuk-body'>
-      <a href='https://github.com/DFE-Digital/apply-for-postgraduate-teacher-training/compare/<%= latest_deploy[:commit] %>...master' class='govuk-body govuk-!-font-size-19'>full diff</a>
+      <a href='https://github.com/DFE-Digital/apply-for-postgraduate-teacher-training/compare/<%= latest_deploy.commit_sha %>...master' class='govuk-body govuk-!-font-size-19'>full diff</a>
     </div>
   </div>
   <% end %>

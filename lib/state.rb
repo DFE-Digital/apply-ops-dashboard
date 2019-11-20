@@ -5,23 +5,23 @@ require 'octokit'
 
 class State
   def master_broken?
-    qa_builds.first[:result] == "failed"
+    qa_builds.first.failed?
   end
 
   def deploy_to_production_failed?
-    latest_deploy_to('production')[:result] == "failed"
+    latest_deploy_to('production').failed?
   end
 
   def deploying_to_staging?
-    latest_deploy_to('staging')[:result].nil?
+    latest_deploy_to('staging').in_progress?
   end
 
   def deploying_to_production?
-    latest_deploy_to('production')[:result].nil?
+    latest_deploy_to('production').in_progress?
   end
 
   def staging_and_production_not_in_sync?
-    latest_deploy_to('staging')[:commit] != latest_deploy_to('production')[:commit]
+    latest_deploy_to('staging').commit_sha != latest_deploy_to('production').commit_sha
   end
 
   def unreleased_pull_requests_since(commit_sha)
@@ -40,7 +40,7 @@ class State
     return latest_successfull_deploy_to_qa if environment == 'qa'
 
     release_builds.find do |build|
-      build[:params]["deploy_#{environment}"] == "true"
+      build.params["deploy_#{environment}"] == "true"
     end
   end
 
@@ -48,14 +48,14 @@ class State
     return latest_successfull_deploy_to_qa if environment == 'qa'
 
     release_builds.find do |build|
-      build[:result] == "succeeded" && build[:params]["deploy_#{environment}"] == "true"
+      build.succeeded? && build.params["deploy_#{environment}"] == "true"
     end
   end
 
 private
 
   def latest_successfull_deploy_to_qa
-    @latest_successfull_deploy_to_qa ||= qa_builds.find { |s| s[:result] == "succeeded" }
+    @latest_successfull_deploy_to_qa ||= qa_builds.find(&:succeeded?)
   end
 
   def qa_builds
@@ -98,17 +98,53 @@ private
     end
 
     def self.convert(builds)
-      builds.map do |b|
-        {
-          start: DateTime.parse(b['queueTime']),
-          # https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1#buildresult
-          result: b['result'],
-          deployer: b['requestedBy']['displayName'],
-          params: b['parameters'] ? JSON.parse(b['parameters']) : nil,
-          link: b['_links']['web']['href'],
-          commit: b['sourceVersion'],
-        }
-      end
+      builds.map { |azure_build| Build.new(azure_build) }
+    end
+  end
+
+  class Build
+    def initialize(azure_build)
+      @azure_build = azure_build
+    end
+
+    def start_time
+      DateTime.parse(azure_build['queueTime']).strftime('%m/%d/%Y %I:%M%p')
+    end
+
+    def succeeded?
+      result == "succeeded"
+    end
+
+    def failed?
+      result == "failed"
+    end
+
+    def in_progress?
+      result.nil?
+    end
+
+    def deployer_name
+      azure_build['requestedBy']['displayName']
+    end
+
+    def params
+      azure_build['parameters'] ? JSON.parse(azure_build['parameters']) : nil
+    end
+
+    def link
+      azure_build['_links']['web']['href']
+    end
+
+    def commit_sha
+      azure_build['sourceVersion']
+    end
+
+  private
+    attr_reader :azure_build
+
+    # https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1#buildresult
+    def result
+      azure_build['result']
     end
   end
 

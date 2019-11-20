@@ -15,7 +15,7 @@ RSpec.describe State do
         expect(state.master_broken?).to be false
         expect(state.deploy_to_production_failed?).to be true
         expect(state.deploying_to_production?).to be false
-        expect(state.latest_successfull_deploy_to('production')[:commit]).to eql('1caecfa6b960213e33b30a4fc37d9d5637afa47d')
+        expect(state.latest_successfull_deploy_to('production').commit_sha).to eql('1caecfa6b960213e33b30a4fc37d9d5637afa47d')
       end
     end
   end
