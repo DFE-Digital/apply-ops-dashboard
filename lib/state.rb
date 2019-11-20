@@ -42,7 +42,7 @@ class State
     end
   end
 
-  def qa_build_in_progress?
+  def deploying_to_qa?
     qa_builds.first.in_progress?
   end
 

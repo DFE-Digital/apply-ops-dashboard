@@ -6,7 +6,7 @@
 </div>
 <% end %>
 
-<% if state.qa_build_in_progress? %>
+<% if (!state.deploying_to_staging? && !state.deploying_to_production?) && state.deploying_to_qa? %>
 <div class='govuk-grid-row'>
   <a href='<%= state.latest_build_to('qa').link %>' class='govuk-heading-m app-banner app-banner--small app-banner--progress'>
     Deploy to QA in progress
