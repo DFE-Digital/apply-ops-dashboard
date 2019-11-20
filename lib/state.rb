@@ -22,7 +22,7 @@ class State
   end
 
   def staging_and_production_not_in_sync?
-    latest_deploy_to('staging').commit_sha != latest_deploy_to('production').commit_sha
+    latest_successfull_deploy_to('staging').commit_sha != latest_successfull_deploy_to('production').commit_sha
   end
 
   def unreleased_pull_requests_since(commit_sha)
