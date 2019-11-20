@@ -9,19 +9,19 @@ class State
   end
 
   def deploy_to_production_failed?
-    latest_deploy_to(:production)[:result] == "failed"
+    latest_deploy_to('production')[:result] == "failed"
   end
 
   def deploying_to_staging?
-    latest_deploy_to(:staging)[:result].nil?
+    latest_deploy_to('staging')[:result].nil?
   end
 
   def deploying_to_production?
-    latest_deploy_to(:production)[:result].nil?
+    latest_deploy_to('production')[:result].nil?
   end
 
   def staging_and_production_not_in_sync?
-    latest_deploy_to(:staging)[:commit] != latest_deploy_to(:production)[:commit]
+    latest_deploy_to('staging')[:commit] != latest_deploy_to('production')[:commit]
   end
 
   def unreleased_pull_requests_since(commit_sha)
