@@ -17,7 +17,7 @@
 <% if state.deploying_to_production? %>
 <div class='govuk-grid-row'>
   <h2 class='govuk-heading-xl app-banner app-banner--progress'>
-    🕺 Deploying to production!
+    🕺 <%= state.latest_deploy_to('production').deployer_name %> is deploying to production!
   </h2>
 </div>
 <% elsif state.staging_and_production_not_in_sync? %>
