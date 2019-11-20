@@ -36,6 +36,10 @@ class Build
     azure_build['sourceVersion']
   end
 
+  def diff_against_master_url
+    "https://github.com/DFE-Digital/apply-for-postgraduate-teacher-training/compare/#{commit_sha}...master"
+  end
+
 private
   attr_reader :azure_build
 

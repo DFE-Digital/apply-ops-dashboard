@@ -1,29 +1,29 @@
 <div class='govuk-grid-row'>
   <% %w[qa staging production sandbox].each do |environment| %>
-  <% latest_deploy = state.latest_successfull_build_to(environment) %>
+  <% latest_build = state.latest_successfull_build_to(environment) %>
 
   <div class='deploy-environment govuk-grid-column-one-quarter deploy-environment--<%= environment %>'>
     <h2 class='govuk-heading-xl'><%= environment %></h2>
 
     <div class='govuk-body govuk-!-font-size-27'>
       last deploy on
-      <%= latest_deploy.start_time %>
-      by <%= latest_deploy.deployer_name %>
-      <code><%= latest_deploy.commit_sha[0..6] %></code>
+      <%= latest_build.start_time %>
+      by <%= latest_build.deployer_name %>
+      <code><%= latest_build.commit_sha[0..6] %></code>
     </div>
 
     <h2 class='govuk-heading-m'>
-      <%= state.unreleased_pull_requests_since(latest_deploy.commit_sha).size %> undeployed PRs
+      <%= state.unreleased_pull_requests_since(latest_build.commit_sha).size %> undeployed PRs
     </h2>
 
     <ul class='govuk-list'>
-      <% state.unreleased_pull_requests_since(latest_deploy.commit_sha).each do |author, title| %>
+      <% state.unreleased_pull_requests_since(latest_build.commit_sha).each do |author, title| %>
         <li><%= title %> (<%= author %>)</li>
       <% end %>
     </ul>
 
     <div class='govuk-body'>
-      <a href='https://github.com/DFE-Digital/apply-for-postgraduate-teacher-training/compare/<%= latest_deploy.commit_sha %>...master' class='govuk-body govuk-!-font-size-19'>full diff</a>
+      <a href='<%= latest_build.diff_against_master_url %>' class='govuk-body govuk-!-font-size-19'>diff against master</a>
     </div>
   </div>
   <% end %>
