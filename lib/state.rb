@@ -10,19 +10,19 @@ class State
   end
 
   def deploy_to_production_failed?
-    latest_deploy_to('production').failed?
+    latest_build_to('production').failed?
   end
 
   def deploying_to_staging?
-    latest_deploy_to('staging').in_progress?
+    latest_build_to('staging').in_progress?
   end
 
   def deploying_to_production?
-    latest_deploy_to('production').in_progress?
+    latest_build_to('production').in_progress?
   end
 
   def staging_and_production_not_in_sync?
-    latest_successfull_deploy_to('staging').commit_sha != latest_successfull_deploy_to('production').commit_sha
+    latest_successfull_build_to('staging').commit_sha != latest_successfull_build_to('production').commit_sha
   end
 
   def unreleased_pull_requests_since(commit_sha)
@@ -37,16 +37,16 @@ class State
     }
   end
 
-  def latest_deploy_to(environment)
-    return latest_successfull_deploy_to_qa if environment == 'qa'
+  def latest_build_to(environment)
+    return latest_successfull_build_to_qa if environment == 'qa'
 
     release_builds.find do |build|
       build.params["deploy_#{environment}"] == "true"
     end
   end
 
-  def latest_successfull_deploy_to(environment)
-    return latest_successfull_deploy_to_qa if environment == 'qa'
+  def latest_successfull_build_to(environment)
+    return latest_successfull_build_to_qa if environment == 'qa'
 
     release_builds.find do |build|
       build.succeeded? && build.params["deploy_#{environment}"] == "true"
@@ -55,8 +55,8 @@ class State
 
 private
 
-  def latest_successfull_deploy_to_qa
-    @latest_successfull_deploy_to_qa ||= qa_builds.find(&:succeeded?)
+  def latest_successfull_build_to_qa
+    @latest_successfull_build_to_qa ||= qa_builds.find(&:succeeded?)
   end
 
   def qa_builds
