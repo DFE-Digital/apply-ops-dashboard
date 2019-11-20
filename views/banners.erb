@@ -6,6 +6,14 @@
 </div>
 <% end %>
 
+<% if state.qa_build_in_progress? %>
+<div class='govuk-grid-row'>
+  <a href='<%= state.latest_build_to('qa').link %>' class='govuk-heading-m app-banner app-banner--small app-banner--progress'>
+    Deploy to QA in progress
+  </a>
+</div>
+<% end %>
+
 <% if state.deploying_to_staging? %>
 <div class='govuk-grid-row'>
   <a href='<%= state.latest_build_to('staging').link %>' class='govuk-heading-xl app-banner app-banner--progress'>

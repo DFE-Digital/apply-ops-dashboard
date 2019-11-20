@@ -40,6 +40,10 @@ body {
   text-decoration: none;
 }
 
+.app-banner--small {
+  padding: 20px 0;
+}
+
 .app-banner--bad {
   background-color: #d4351c;
   color: #fff;
