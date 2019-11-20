@@ -6,14 +6,6 @@
 </div>
 <% end %>
 
-<% if state.qa_build_in_progress? %>
-<div class='govuk-grid-row'>
-  <a href='<%= state.latest_build_to('qa').link %>' class='govuk-heading-m app-banner app-banner--small app-banner--progress'>
-    Deploy to QA in progress
-  </a>
-</div>
-<% end %>
-
 <% if state.deploying_to_staging? %>
 <div class='govuk-grid-row'>
   <a href='<%= state.latest_build_to('staging').link %>' class='govuk-heading-xl app-banner app-banner--progress'>
@@ -31,9 +23,9 @@
 <% elsif state.staging_and_production_not_in_sync? %>
 <div class='govuk-grid-row'>
   <h2 class='govuk-heading-xl app-banner app-banner--progress'>
-    ☭ Staging and Production not in sync
+    👮‍♀️ Staging and Production not in sync
     <div class='govuk-body'>
-      Manual testing is taking place (one would hope).
+      This probably means that a deploy is in progress and staging is being tested
     </div>
   </h2>
 </div>
