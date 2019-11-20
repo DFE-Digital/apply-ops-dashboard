@@ -12,7 +12,7 @@
     </div>
 
     <div class='govuk-body'>
-      Current SHA: <code><%= latest_build.commit_sha[0..6] %></code>
+      Current version: <code><a href='<%= "https://github.com/DFE-Digital/apply-for-postgraduate-teacher-training/commit/#{latest_build.commit_sha}" %>'><%= latest_build.commit_sha[0..6] %></a></code>
     </div>
 
     <%= erb :deploy, locals: { environment: environment, state: state, latest_build: latest_build } %>
