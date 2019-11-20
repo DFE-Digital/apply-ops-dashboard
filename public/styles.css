@@ -18,10 +18,6 @@ body {
   background-color: #1d70b8;
 }
 
-.deploy-environment--sandbox {
-  background-color: #4c2c92;
-}
-
 .deploy-environment--pentest {
   background-color: #0b0c0c;
 }
