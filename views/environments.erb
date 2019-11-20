@@ -1,6 +1,6 @@
 <div class='govuk-grid-row'>
   <% %w[qa staging production sandbox].each do |environment| %>
-  <% latest_deploy = state.latest_deploy_to(environment) %>
+  <% latest_deploy = state.latest_successfull_deploy_to(environment) %>
 
   <div class='deploy-environment govuk-grid-column-one-quarter deploy-environment--<%= environment %>'>
     <h2 class='govuk-heading-xl'><%= environment %></h2>

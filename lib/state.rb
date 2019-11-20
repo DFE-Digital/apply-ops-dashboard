@@ -44,6 +44,14 @@ class State
     end
   end
 
+  def latest_successfull_deploy_to(environment)
+    return latest_successfull_deploy_to_qa if environment == 'qa'
+
+    release_builds.find do |build|
+      build[:result] == "succeeded" && build[:params]["deploy_#{environment}"] == "true"
+    end
+  end
+
 private
 
   def latest_successfull_deploy_to_qa

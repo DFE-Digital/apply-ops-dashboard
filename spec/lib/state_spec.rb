@@ -7,12 +7,27 @@ VCR.configure do |config|
 end
 
 RSpec.describe State do
-  it 'works' do
-    VCR.use_cassette("deploy-to-production-failed") do
-      state = State.new
+  context 'a deploy to production failed' do
+    it 'reports the correct data' do
+      VCR.use_cassette("deploy-to-production-failed") do
+        state = State.new
 
-      state.latest_deploy_to('production')
-      state.latest_deploy_to('qa')
+        expect(state.master_broken?).to be false
+        expect(state.deploy_to_production_failed?).to be true
+        expect(state.deploying_to_production?).to be false
+        expect(state.latest_successfull_deploy_to('production')[:commit]).to eql('1caecfa6b960213e33b30a4fc37d9d5637afa47d')
+      end
+    end
+  end
+
+  context 'a deploy to production in progress' do
+    it 'reports the correct data' do
+      VCR.use_cassette("deploy-to-production-in-progress") do
+        state = State.new
+
+        expect(state.deploy_to_production_failed?).to be false
+        expect(state.deploying_to_production?).to be true
+      end
     end
   end
 end
