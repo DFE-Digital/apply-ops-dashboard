@@ -1,8 +1,8 @@
 <% if state.master_broken? %>
 <div class='govuk-grid-row'>
-  <h2 class='govuk-heading-xl app-banner app-banner--bad'>
+  <a href='https://github.com/DFE-Digital/apply-for-postgraduate-teacher-training/commits/master' class='govuk-heading-xl app-banner app-banner--bad'>
     🚨 Master is broken
-  </h2>
+  </a>
 </div>
 <% end %>
 
@@ -33,9 +33,9 @@
 
 <% if state.deploy_to_production_failed? %>
 <div class='govuk-grid-row'>
-  <h2 class='govuk-heading-xl app-banner app-banner--bad'>
-    🚨 Deploy to production failed! 🚨
-  </h2>
+  <a href='<%= state.latest_build_to('production').link %>' class='govuk-heading-xl app-banner app-banner--bad'>
+    💔 Deploy to production failed
+  </a>
 </div>
 <% end %>
 
