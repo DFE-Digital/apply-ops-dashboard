@@ -20,23 +20,21 @@
     🕺 Deploying to production!
   </h2>
 </div>
-<% end %>
-
-<% if state.deploy_to_production_failed? %>
-<div class='govuk-grid-row'>
-  <h2 class='govuk-heading-xl app-banner app-banner--bad'>
-    🚨 Deploy to production failed! 🚨
-  </h2>
-</div>
-<% end %>
-
-<% if state.staging_and_production_not_in_sync? %>
+<% elsif state.staging_and_production_not_in_sync? %>
 <div class='govuk-grid-row'>
   <h2 class='govuk-heading-xl app-banner app-banner--progress'>
     ☭ Staging and Production not in sync
     <div class='govuk-body'>
       Manual testing is taking place (one would hope).
     </div>
+  </h2>
+</div>
+<% end %>
+
+<% if state.deploy_to_production_failed? %>
+<div class='govuk-grid-row'>
+  <h2 class='govuk-heading-xl app-banner app-banner--bad'>
+    🚨 Deploy to production failed! 🚨
   </h2>
 </div>
 <% end %>
