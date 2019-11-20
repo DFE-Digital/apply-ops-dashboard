@@ -13,8 +13,7 @@
     <% end %>
   </ol>
 
-
-  <label class="govuk-label" style='font-color: #fff;'>Commit to use for deploy:</label>
+  <label class="govuk-label" style='color: #fff;'>Commit to use for deploy:</label>
   <input value='<%= state.latest_successfull_build_to('qa').commit_sha %>' class='govuk-input' %>
 
 <% elsif environment == 'production' %>
