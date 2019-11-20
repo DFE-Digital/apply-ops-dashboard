@@ -40,10 +40,6 @@ class Build
     "https://github.com/DFE-Digital/apply-for-postgraduate-teacher-training/compare/#{commit_sha}...#{other_sha}"
   end
 
-  def diff_against_master_url
-    diff_against_url('master')
-  end
-
 private
   attr_reader :azure_build
 

@@ -9,7 +9,7 @@
     <div class='govuk-body'><%= prs.size %> PRs behind master</div>
 
     <div class='govuk-body'>
-      <a href='<%= latest_build.diff_against_master_url %>' class='govuk-body govuk-!-font-size-19'>diff QA against master</a>
+      The following PRs haven't been deployed to QA yet (<a href='<%= latest_build.diff_against_url('master') %>' class='govuk-!-font-size-19'>see the full diff of QA against master</a>):
     </div>
 
     <ol class='govuk-list govuk-list--number govuk-body-s'>
