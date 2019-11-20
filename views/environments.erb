@@ -12,7 +12,9 @@
       <code><%= latest_deploy.commit_sha[0..6] %></code>
     </div>
 
-    <h2 class='govuk-heading-m'><%= state.unreleased_pull_requests_since(latest_deploy.commit_sha).size %> undeployed PRs</h2>
+    <h2 class='govuk-heading-m'>
+      <%= state.unreleased_pull_requests_since(latest_deploy.commit_sha).size %> undeployed PRs
+    </h2>
 
     <ul class='govuk-list'>
       <% state.unreleased_pull_requests_since(latest_deploy.commit_sha).each do |author, title| %>

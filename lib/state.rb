@@ -1,7 +1,8 @@
-require 'http'
 require 'yaml'
-require 'json'
-require 'octokit'
+
+require_relative 'azure'
+require_relative 'github'
+require_relative 'build'
 
 class State
   def master_broken?
@@ -78,80 +79,6 @@ private
       }
 
       Azure.get("/build/builds", params)
-    end
-  end
-
-  class Azure
-    ORGANISATION = 'dfe-ssp'
-    PROJECT = 'Become-A-Teacher'
-
-    # https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1
-    def self.get(path, params)
-      api_response = HTTP
-        .basic_auth(user: ENV.fetch("AZURE_USERNAME"), pass: ENV.fetch("AZURE_ACCESS_TOKEN"))
-        .get(
-        "https://dev.azure.com/#{ORGANISATION}/#{PROJECT}/_apis#{path}", params: params
-      )
-
-      builds = JSON.parse(api_response)['value'].sort_by { |b| b["queueTime"] }.reverse
-      convert(builds)
-    end
-
-    def self.convert(builds)
-      builds.map { |azure_build| Build.new(azure_build) }
-    end
-  end
-
-  class Build
-    def initialize(azure_build)
-      @azure_build = azure_build
-    end
-
-    def start_time
-      DateTime.parse(azure_build['queueTime']).strftime('%m/%d/%Y %I:%M%p')
-    end
-
-    def succeeded?
-      result == "succeeded"
-    end
-
-    def failed?
-      result == "failed"
-    end
-
-    def in_progress?
-      result.nil?
-    end
-
-    def deployer_name
-      name = azure_build['requestedBy']['displayName']
-      name == 'Microsoft.VisualStudio.Services.TFS' ? 'Autodeploy' : name
-    end
-
-    def params
-      azure_build['parameters'] ? JSON.parse(azure_build['parameters']) : nil
-    end
-
-    def link
-      azure_build['_links']['web']['href']
-    end
-
-    def commit_sha
-      azure_build['sourceVersion']
-    end
-
-  private
-    attr_reader :azure_build
-
-    # https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1#buildresult
-    def result
-      azure_build['result']
-    end
-  end
-
-  class GitHub
-    def self.client
-      @client ||= Octokit::Client.new
     end
   end
 end

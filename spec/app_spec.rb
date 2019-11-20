@@ -4,7 +4,7 @@ require_relative '../app'
 require 'rspec'
 require 'rack/test'
 
-RSpec.describe 'The HelloWorld App' do
+RSpec.describe 'The Apply Ops Dashboard' do
   include Rack::Test::Methods
 
   def app
