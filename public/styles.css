@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  background-color: #0b0c0c;
 }
 
 .deploy-environment {
@@ -18,10 +19,7 @@ body {
   background-color: #1d70b8;
 }
 
-.deploy-environment--pentest {
-  background-color: #0b0c0c;
-}
-
+.govuk-heading-s,
 .deploy-environment a,
 .deploy-environment h2,
 .deploy-environment .govuk-body,

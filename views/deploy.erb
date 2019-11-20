@@ -6,7 +6,7 @@
       👌 All of the PRs on master are deployed
     </div>
   <% else %>
-    <div class='govuk-body'><%= prs.size %> PRs behind master</div>
+    <div class='govuk-heading-s'><%= prs.size %> PRs behind master</div>
 
     <div class='govuk-body'>
       The following PRs haven't been deployed to QA yet (<a href='<%= latest_build.diff_against_url('master') %>' class='govuk-!-font-size-19'>see the full diff of QA against master</a>):
@@ -26,7 +26,7 @@
       👌 Staging is up to date with QA
     </div>
   <% else %>
-    <div class='govuk-body'><%= prs.size %> PRs behind QA</div>
+    <div class='govuk-heading-s'><%= prs.size %> PRs behind QA</div>
 
     <div class='govuk-body'>
       The following PRs haven't been deployed to staging yet (<a href='<%= latest_build.diff_against_url(state.latest_successfull_build_to('qa').commit_sha) %>' class='govuk-!-font-size-19'>see the full diff of Staging against QA</a>):
@@ -49,7 +49,7 @@
       👌 Production is up to date with Staging
     </div>
   <% else %>
-    <div class='govuk-body'><%= prs.size %> PRs behind Staging</div>
+    <div class='govuk-heading-s'><%= prs.size %> PRs behind Staging</div>
 
     <div class='govuk-body'>
       The following PRs haven't been deployed to production yet (<a href='<%= latest_build.diff_against_url(state.latest_successfull_build_to('staging').commit_sha) %>' class='govuk-!-font-size-19'>see the full diff of Production against Staging</a>):
