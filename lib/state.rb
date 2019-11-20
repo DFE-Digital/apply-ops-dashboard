@@ -5,7 +5,23 @@ require 'octokit'
 
 class State
   def master_broken?
-    qa_builds.first[:result] != "succeeded"
+    qa_builds.first[:result] == "failed"
+  end
+
+  def deploy_to_production_failed?
+    latest_deploy_to(:production)[:result] == "failed"
+  end
+
+  def deploying_to_staging?
+    latest_deploy_to(:staging)[:result].nil?
+  end
+
+  def deploying_to_production?
+    latest_deploy_to(:production)[:result].nil?
+  end
+
+  def staging_and_production_not_in_sync?
+    latest_deploy_to(:staging)[:commit] != latest_deploy_to(:production)[:commit]
   end
 
   def unreleased_pull_requests_since(commit_sha)
@@ -61,6 +77,7 @@ private
     ORGANISATION = 'dfe-ssp'
     PROJECT = 'Become-A-Teacher'
 
+    # https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1
     def self.get(path, params)
       api_response = HTTP
         .basic_auth(user: ENV.fetch("AZURE_USERNAME"), pass: ENV.fetch("AZURE_ACCESS_TOKEN"))
@@ -76,6 +93,7 @@ private
       builds.map do |b|
         {
           start: DateTime.parse(b['queueTime']),
+          # https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1#buildresult
           result: b['result'],
           deployer: b['requestedBy']['displayName'],
           params: b['parameters'] ? JSON.parse(b['parameters']) : nil,
