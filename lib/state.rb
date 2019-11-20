@@ -124,7 +124,8 @@ private
     end
 
     def deployer_name
-      azure_build['requestedBy']['displayName']
+      name = azure_build['requestedBy']['displayName']
+      name == 'Microsoft.VisualStudio.Services.TFS' ? 'Autodeploy' : name
     end
 
     def params

@@ -9,7 +9,7 @@
       last deploy on
       <%= latest_deploy.start_time %>
       by <%= latest_deploy.deployer_name %>
-      <code><%= latest_deploy.commit_sha %></code>
+      <code><%= latest_deploy.commit_sha[0..6] %></code>
     </div>
 
     <h2 class='govuk-heading-m'><%= state.unreleased_pull_requests_since(latest_deploy.commit_sha).size %> undeployed PRs</h2>
