@@ -12,4 +12,6 @@ group :test do
   gem 'vcr'
   gem 'rack-test'
   gem 'dotenv'
+  gem 'timecop'
+  gem 'climate_control'
 end

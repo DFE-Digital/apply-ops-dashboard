@@ -20,6 +20,13 @@ foreman start
 
 The app will appear on <http://localhost:5000>.
 
+## Deployment rota
+
+If you populate the env var `DEPLOYERS` with a comma-separated list of names,
+one will be chosen each day to be the nominated deployer and displayed on the
+dashboard, along with a couple of reserve deployers in case they're ill or
+away.
+
 ## Tests
 
 You can run the tests, such as they are, with:
