@@ -4,6 +4,7 @@ require_relative 'azure'
 require_relative 'github'
 require_relative 'build'
 require_relative 'diff'
+require_relative 'deployers'
 
 class State
   def master_broken?
@@ -44,6 +45,10 @@ class State
 
   def deploying_to_qa?
     qa_builds.first.in_progress?
+  end
+
+  def deployers_for_today
+    Deployers.for_today
   end
 
 private

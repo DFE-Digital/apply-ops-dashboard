@@ -23,7 +23,9 @@ body {
 .deploy-environment a,
 .deploy-environment h2,
 .deploy-environment .govuk-body,
-.deploy-environment .govuk-list {
+.deploy-environment .govuk-list,
+.deployers .govuk-body,
+.deployers .govuk-heading-m {
   color: #fff;
 }
 

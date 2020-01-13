@@ -1,0 +1,14 @@
+<% if state.deployers_for_today.any? %>
+  <div class="govuk-grid-row deployers">
+    <div class="govuk-body">
+      <ul>
+        <h3 class="govuk-heading-m">
+          Today's deployer is <%= state.deployers_for_today.first %>
+        </h3>
+        <p class="govuk-heading-s">
+          Reserves: <%= state.deployers_for_today.slice(1..2).join(', ') %>
+        </p>
+      </ul>
+    </div>
+  </div>
+<% end %>
