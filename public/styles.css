@@ -60,6 +60,10 @@ body {
   padding: 10px 10px;
 }
 
+.apply-feature-header {
+  padding-left: 20px;
+}
+
 .apply-feature-active {
   background-color: #00703c;
 }

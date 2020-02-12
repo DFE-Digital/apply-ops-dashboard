@@ -32,7 +32,7 @@
       <tbody class="govuk-table__body">
         <% Features.new.all.each do |feature| %>
           <tr class="govuk-table__row">
-            <th scope="row" class="govuk-table__header apply-feature-state--<%= feature.state %>"><%= feature.name %></th>
+            <th scope="row" class="govuk-table__header apply-feature-header apply-feature-state--<%= feature.state %>"><%= feature.name %></th>
 
             <% %w[production staging sandbox qa].each do |e| %>
               <td class="govuk-table__cell apply-feature <%= feature.send(e) ? "apply-feature-active" : "apply-feature-inactive" %>"><%= feature.send(e) ? "Active" : "Inactive" %></td>
