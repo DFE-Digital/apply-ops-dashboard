@@ -35,7 +35,11 @@
             <th scope="row" class="govuk-table__header apply-feature-header apply-feature-state--<%= feature.state %>"><%= feature.name %></th>
 
             <% %w[production staging sandbox qa].each do |e| %>
-              <td class="govuk-table__cell apply-feature <%= feature.send(e) ? "apply-feature-active" : "apply-feature-inactive" %>"><%= feature.send(e) ? "Active" : "Inactive" %></td>
+              <td class="govuk-table__cell apply-feature <%= feature.send(e) ? "apply-feature-active" : "apply-feature-inactive" %>">
+                <a href="https://<%= e == 'production' ? 'www' : e %>.apply-for-teacher-training.education.gov.uk/support/feature-flags">
+                  <%= feature.send(e) ? "Active" : "Inactive" %>
+                </a>
+              </td>
             <% end %>
           </tr>
           <% end %>

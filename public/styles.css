@@ -60,6 +60,11 @@ body {
   padding: 10px 10px;
 }
 
+.apply-feature a {
+  text-decoration: none;
+  color: #fff;
+}
+
 .apply-feature-header {
   padding-left: 20px;
 }
