@@ -58,16 +58,10 @@ body {
 .apply-feature {
   width: 15%;
   padding: 10px 10px;
-  border-bottom: 1px solid #0b0c0c;
 }
 
 .apply-feature-active {
   background-color: #00703c;
-}
-
-.apply-feature-inactive {
-  background-color: #b1b4b6;
-  color: #0b0c0c;
 }
 
 .apply-feature-state--confused {
