@@ -71,3 +71,7 @@ body {
 .apply-feature-state--confused {
   background-color: #d4351c;
 }
+
+.apply-feature-state--confused:after {
+  content: '🥴';
+}
