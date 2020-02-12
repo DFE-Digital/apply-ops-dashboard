@@ -49,3 +49,33 @@ body {
   background-color: #ffdd00;
   color: #0b0c0c;
 }
+
+.apply-hypertable {
+  color: #fff;
+  font-size: 25px;
+}
+
+.apply-feature {
+  width: 15%;
+  padding: 10px 10px;
+}
+
+.apply-feature-header {
+  padding-left: 20px;
+}
+
+.apply-feature-active {
+  background-color: #00703c;
+}
+
+.apply-feature-state--confused {
+  background-color: #d4351c;
+}
+
+.apply-feature-state--confused:after {
+  content: ' 🥴';
+}
+
+.apply-feature-state--shipping:after {
+  content: ' 🚢';
+}
