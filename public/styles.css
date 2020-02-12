@@ -73,5 +73,5 @@ body {
 }
 
 .apply-feature-state--confused:after {
-  content: '🥴';
+  content: ' 🥴';
 }
