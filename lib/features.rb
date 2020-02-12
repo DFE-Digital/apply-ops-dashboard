@@ -1,9 +1,9 @@
 class Features
   def all
-    prod = get('www')
-    staging = get('staging')
-    sandbox = get('sandbox')
-    qa = get('qa')
+    prod = feature_flags_for('www')
+    staging = feature_flags_for('staging')
+    sandbox = feature_flags_for('sandbox')
+    qa = feature_flags_for('qa')
 
     feature_ids = (qa['feature_flags'].keys + staging['feature_flags'].keys + prod['feature_flags'].keys + sandbox['feature_flags'].keys).uniq
     feature_ids.map do |id|
@@ -15,6 +15,10 @@ class Features
         qa: qa['feature_flags'][id]['active'],
       )
     end
+  end
+
+  def feature_flags_for(env)
+    JSON.parse(HTTP.get("https://#{env}.apply-for-teacher-training.education.gov.uk/integrations/feature-flags"))
   end
 
   class Feature
@@ -39,9 +43,5 @@ class Features
         'confused'
       end
     end
-  end
-
-  def get(env)
-    JSON.parse(HTTP.get("https://#{env}.apply-for-teacher-training.education.gov.uk/integrations/feature-flags"))
   end
 end
