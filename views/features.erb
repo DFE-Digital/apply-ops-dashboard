@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Apply ops dashboard - features</title>
+    <link rel='stylesheet' href='/govuk-frontend-3.4.0.min.css'>
+    <link rel='stylesheet' href='/styles.css'>
+    <meta name="robots" content="noindex">
+  </head>
+  <body>
+
+    <table class='govuk-table apply-hypertable'>
+      <thead>
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">
+
+          </th>
+          <th scope="col" class="govuk-table__header">
+            Production
+          </th>
+          <th scope="col" class="govuk-table__header">
+            Staging
+          </th>
+          <th scope="col" class="govuk-table__header">
+            Sandbox
+          </th>
+          <th scope="col" class="govuk-table__header">
+            QA
+          </th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        <% Features.new.all.each do |feature| %>
+          <tr class="govuk-table__row">
+            <th scope="row" class="govuk-table__header apply-feature-state--<%= feature.state %>"><%= feature.name %></th>
+
+            <% %w[production staging sandbox qa].each do |e| %>
+              <td class="govuk-table__cell apply-feature <%= feature.send(e) ? "apply-feature-active" : "apply-feature-inactive" %>"><%= feature.send(e) ? "Active" : "Inactive" %></td>
+            <% end %>
+          </tr>
+          <% end %>
+      </tbody>
+    </table>
+
+    <script src="/main.js" charset="utf-8"></script>
+  </body>
+</html>
