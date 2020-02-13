@@ -8,11 +8,11 @@ class Features
     feature_ids = (qa['feature_flags'].keys + staging['feature_flags'].keys + prod['feature_flags'].keys + sandbox['feature_flags'].keys).uniq
     feature_ids.map do |id|
       Feature.new(
-        name: qa['feature_flags'][id]['name'],
-        production: prod['feature_flags'][id]['active'],
-        staging: staging['feature_flags'][id]['active'],
-        sandbox: sandbox['feature_flags'][id]['active'],
-        qa: qa['feature_flags'][id]['active'],
+        name: qa.dig('feature_flags', id, 'name'),
+        production: prod.dig('feature_flags', id, 'active') || false,
+        staging: staging.dig('feature_flags', id, 'active') || false,
+        sandbox: sandbox.dig('feature_flags', id, 'active') || false,
+        qa: qa.dig('feature_flags', id, 'active') || false,
       )
     end
   end
