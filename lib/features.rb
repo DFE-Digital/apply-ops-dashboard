@@ -6,13 +6,17 @@ class Features
     qa = feature_flags_for('qa')
 
     feature_ids = (qa['feature_flags'].keys + staging['feature_flags'].keys + prod['feature_flags'].keys + sandbox['feature_flags'].keys).uniq
+
     feature_ids.map do |id|
+      # get the name of the feature from whichever environment knows it
+      name = [prod, staging, sandbox, qa].map { |env| env.dig('feature_flags', id, 'name') }.reject(&:nil?).first
+
       Feature.new(
-        name: qa['feature_flags'][id]['name'],
-        production: prod['feature_flags'][id]['active'],
-        staging: staging['feature_flags'][id]['active'],
-        sandbox: sandbox['feature_flags'][id]['active'],
-        qa: qa['feature_flags'][id]['active'],
+        name: name,
+        production: prod.dig('feature_flags', id, 'active') || false,
+        staging: staging.dig('feature_flags', id, 'active') || false,
+        sandbox: sandbox.dig('feature_flags', id, 'active') || false,
+        qa: qa.dig('feature_flags', id, 'active') || false,
       )
     end
   end
