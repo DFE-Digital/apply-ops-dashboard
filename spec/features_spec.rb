@@ -15,7 +15,7 @@ RSpec.describe Features do
     result = Features.new.all
 
     expect(result).to all be_a(Features::Feature)
-    expect(result.count).to eq 15
+    expect(result.count).to eq 12
   end
 
   it 'handles a feature which is present on qa but not on other envs' do
@@ -63,5 +63,26 @@ RSpec.describe Features do
     expect(new_feature.production).to be true
     expect(new_feature.staging).to be false
     expect(new_feature.sandbox).to be false
+  end
+
+  describe '#sandbox_environments' do
+    it 'returns a correct list of environments' do
+      sandbox_mode_json = JSON.parse(EXAMPLE_JSON)
+      sandbox_mode_json["sandbox_mode"] = true
+
+      ['www', 'staging'].each do |env|
+        stub_request(:get, "https://#{env}.apply-for-teacher-training.education.gov.uk/integrations/feature-flags")
+          .to_return(body: EXAMPLE_JSON)
+      end
+
+      ['qa', 'sandbox'].each do |env|
+        stub_request(:get, "https://#{env}.apply-for-teacher-training.education.gov.uk/integrations/feature-flags")
+          .to_return(body: sandbox_mode_json.to_json)
+      end
+
+      result = Features.new.sandbox_environments
+
+      expect(result).to match_array [:qa, :sandbox]
+    end
   end
 end

@@ -15,18 +15,12 @@
           <th scope="col" class="govuk-table__header">
 
           </th>
-          <th scope="col" class="govuk-table__header">
-            Production
-          </th>
-          <th scope="col" class="govuk-table__header">
-            Staging
-          </th>
-          <th scope="col" class="govuk-table__header">
-            Sandbox
-          </th>
-          <th scope="col" class="govuk-table__header">
-            QA
-          </th>
+          <% %i[production staging sandbox qa].each do |e| %>
+            <th scope="col" class="govuk-table__header">
+              <%= @features.environment_name(e) %>
+              <%= @features.sandbox_environments.include?(e) ? "🏖️" : "" %>
+            </th>
+          <% end %>
         </tr>
       </thead>
       <tbody class="govuk-table__body">
@@ -34,9 +28,9 @@
           <tr class="govuk-table__row">
             <th scope="row" class="govuk-table__header apply-feature-header apply-feature-state--<%= feature.state %>"><%= feature.name %></th>
 
-            <% %w[production staging sandbox qa].each do |e| %>
+            <% %i[production staging sandbox qa].each do |e| %>
               <td class="govuk-table__cell apply-feature <%= feature.send(e) ? "apply-feature-active" : "apply-feature-inactive" %>">
-                <a href="https://<%= e == 'production' ? 'www' : e %>.apply-for-teacher-training.education.gov.uk/support/feature-flags">
+                <a href="<%= @features.environment_url(e) %>">
                   <%= feature.send(e) ? "Active" : "Inactive" %>
                 </a>
               </td>
