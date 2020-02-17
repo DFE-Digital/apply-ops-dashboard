@@ -8,6 +8,7 @@ class MyApp < Sinatra::Base
   end
 
   get '/features' do
+    @features = Features.new
     erb :features
   end
 end
