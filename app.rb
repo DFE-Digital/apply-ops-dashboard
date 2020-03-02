@@ -9,6 +9,7 @@ class MyApp < Sinatra::Base
 
   get '/features' do
     @features = Features.new
+    @sorted_features = @features.all.sort_by { |f| ['confused', 'shipping', 'ok'].index(f.state) }
     erb :features
   end
 end

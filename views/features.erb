@@ -24,7 +24,7 @@
         </tr>
       </thead>
       <tbody class="govuk-table__body">
-        <% Features.new.all.each do |feature| %>
+        <% @sorted_features.each do |feature| %>
           <tr class="govuk-table__row">
             <th scope="row" class="govuk-table__header apply-feature-header apply-feature-state--<%= feature.state %>"><%= feature.name %></th>
 
