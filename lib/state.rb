@@ -51,6 +51,12 @@ class State
     Deployers.for_today
   end
 
+  def hotfix_in_progress?
+    !GitHub.client.branch(GitHub::GITHUB_REPO, GitHub::HOTFIX_BRANCH).nil?
+  rescue Octokit::NotFound
+    false
+  end
+
 private
 
   def latest_successfull_build_to_qa
