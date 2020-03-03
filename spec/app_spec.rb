@@ -12,8 +12,10 @@ RSpec.describe 'The Apply Ops Dashboard' do
   end
 
   it "works" do
-    VCR.use_cassette('full-page-request') do
-      get '/'
+    VCR.use_cassette('github-repo-without-hotfix-branch') do
+      VCR.use_cassette('full-page-request') do
+        get '/'
+      end
     end
 
     expect(last_response).to be_ok
