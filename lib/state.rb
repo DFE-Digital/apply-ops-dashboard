@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'yaml'
 require 'active_support/all'
 
@@ -32,7 +34,7 @@ class State
     return qa_builds.first if environment == 'qa'
 
     release_builds.find do |build|
-      build.params["deploy_#{environment}"] == "true"
+      build.params["deploy_#{environment}"] == 'true'
     end
   end
 
@@ -40,7 +42,7 @@ class State
     return latest_successfull_build_to_qa if environment == 'qa'
 
     release_builds.find do |build|
-      build.succeeded? && build.params["deploy_#{environment}"] == "true"
+      build.succeeded? && build.params["deploy_#{environment}"] == 'true'
     end
   end
 
@@ -72,18 +74,18 @@ private
         'branchName' => 'refs/heads/master',
       }
 
-      Azure.get("/build/builds", params)
+      Azure.get('/build/builds', params)
     end
   end
 
   def release_builds
-    @raw_builds ||= begin
+    @release_builds ||= begin
       params = {
         'api-version' => '5.1',
         'definitions' => 325, # release pipeline ID
       }
 
-      Azure.get("/build/builds", params)
+      Azure.get('/build/builds', params)
     end
   end
 end

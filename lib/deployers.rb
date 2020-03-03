@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Deployers
   def self.for_today
     if ENV['DEPLOYERS']

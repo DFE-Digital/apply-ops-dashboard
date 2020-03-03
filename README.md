@@ -35,6 +35,12 @@ You can run the tests, such as they are, with:
 bundle exec rspec
 ```
 
+You can run Rubocop with:
+
+```
+bundle exec rubocop
+```
+
 ## Deployment
 
 Auto-deploy to Heroku is set up from master.

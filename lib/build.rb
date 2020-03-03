@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Build
   def initialize(azure_build)
     @azure_build = azure_build
@@ -8,11 +10,11 @@ class Build
   end
 
   def succeeded?
-    result == "succeeded"
+    result == 'succeeded'
   end
 
   def failed?
-    result == "failed"
+    result == 'failed'
   end
 
   def in_progress?
@@ -41,6 +43,7 @@ class Build
   end
 
 private
+
   attr_reader :azure_build
 
   # https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1#buildresult

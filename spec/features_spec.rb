@@ -1,10 +1,14 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'features'
 require 'webmock/rspec'
 
 RSpec.describe Features do
-  EXAMPLE_JSON = File.read('spec/examples/features.json')
-  ENVS = %w{qa www staging sandbox}
+  before do
+    stub_const('EXAMPLE_JSON', File.read('spec/examples/features.json'))
+    stub_const('ENVS', %w[qa www staging sandbox].freeze)
+  end
 
   it 'constructs an mapping for each feature' do
     ENVS.each do |env|
@@ -22,9 +26,9 @@ RSpec.describe Features do
     standard_json = EXAMPLE_JSON
 
     json_with_a_new_flag = JSON.parse(EXAMPLE_JSON)
-    json_with_a_new_flag["feature_flags"]["killer_robots"] = {"name" => "Killer robots", "active" => true }
+    json_with_a_new_flag['feature_flags']['killer_robots'] = { 'name' => 'Killer robots', 'active' => true }
 
-    (ENVS - ['qa']).each do |env|
+    (ENVS - %w[qa]).each do |env|
       stub_request(:get, "https://#{env}.apply-for-teacher-training.education.gov.uk/integrations/feature-flags")
         .to_return(body: standard_json)
     end
@@ -34,7 +38,7 @@ RSpec.describe Features do
 
     result = Features.new.all
 
-    new_feature = result.find { |f| f.name == "Killer robots" }
+    new_feature = result.find { |f| f.name == 'Killer robots' }
     expect(new_feature.qa).to be true
     expect(new_feature.production).to be false
     expect(new_feature.staging).to be false
@@ -45,9 +49,9 @@ RSpec.describe Features do
     standard_json = EXAMPLE_JSON
 
     json_with_a_new_flag = JSON.parse(EXAMPLE_JSON)
-    json_with_a_new_flag["feature_flags"]["killer_robots"] = {"name" => "Killer robots", "active" => true }
+    json_with_a_new_flag['feature_flags']['killer_robots'] = { 'name' => 'Killer robots', 'active' => true }
 
-    (ENVS - ['www']).each do |env|
+    (ENVS - %w[www]).each do |env|
       stub_request(:get, "https://#{env}.apply-for-teacher-training.education.gov.uk/integrations/feature-flags")
         .to_return(body: standard_json)
     end
@@ -57,7 +61,7 @@ RSpec.describe Features do
 
     result = Features.new.all
 
-    new_feature = result.find { |f| f.name == "Killer robots" }
+    new_feature = result.find { |f| f.name == 'Killer robots' }
 
     expect(new_feature.qa).to be false
     expect(new_feature.production).to be true
@@ -68,21 +72,21 @@ RSpec.describe Features do
   describe '#sandbox_environments' do
     it 'returns a correct list of environments' do
       sandbox_mode_json = JSON.parse(EXAMPLE_JSON)
-      sandbox_mode_json["sandbox_mode"] = true
+      sandbox_mode_json['sandbox_mode'] = true
 
-      ['www', 'staging'].each do |env|
+      %w[www staging].each do |env|
         stub_request(:get, "https://#{env}.apply-for-teacher-training.education.gov.uk/integrations/feature-flags")
           .to_return(body: EXAMPLE_JSON)
       end
 
-      ['qa', 'sandbox'].each do |env|
+      %w[qa sandbox].each do |env|
         stub_request(:get, "https://#{env}.apply-for-teacher-training.education.gov.uk/integrations/feature-flags")
           .to_return(body: sandbox_mode_json.to_json)
       end
 
       result = Features.new.sandbox_environments
 
-      expect(result).to match_array [:qa, :sandbox]
+      expect(result).to match_array %i[qa sandbox]
     end
   end
 end
