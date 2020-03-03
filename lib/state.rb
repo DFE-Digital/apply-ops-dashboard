@@ -1,4 +1,5 @@
 require 'yaml'
+require 'active_support/all'
 
 require_relative 'azure'
 require_relative 'github'
@@ -49,6 +50,12 @@ class State
 
   def deployers_for_today
     Deployers.for_today
+  end
+
+  def hotfix_in_progress?
+    GitHub.client.branch(GitHub::GITHUB_REPO, GitHub::HOTFIX_BRANCH).present?
+  rescue Octokit::NotFound
+    false
   end
 
 private

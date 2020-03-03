@@ -5,6 +5,7 @@ gem 'http'
 gem 'sinatra'
 gem 'octokit'
 gem 'foreman'
+gem 'activesupport'
 
 group :test do
   gem 'rspec'

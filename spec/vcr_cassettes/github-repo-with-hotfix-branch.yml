@@ -1,0 +1,83 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.github.com/repos/DFE-Digital/apply-for-postgraduate-teacher-training/branches/hotfix
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 4.14.0
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 02 Mar 2020 15:37:52 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Server:
+      - GitHub.com
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '53'
+      X-Ratelimit-Reset:
+      - '1583165633'
+      Cache-Control:
+      - public, max-age=60, s-maxage=60
+      Vary:
+      - Accept
+      - Accept-Encoding, Accept, X-Requested-With
+      Etag:
+      - W/"c474f5b4b87c58582981fa6116dc6e65"
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval,
+        X-GitHub-Media-Type, Deprecation, Sunset
+      Access-Control-Allow-Origin:
+      - "*"
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Frame-Options:
+      - deny
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Referrer-Policy:
+      - origin-when-cross-origin, strict-origin-when-cross-origin
+      Content-Security-Policy:
+      - default-src 'none'
+      X-Github-Request-Id:
+      - EDD4:1F0BF:6BE1DBE:7E263E7:5E5D2850
+    body:
+      encoding: ASCII-8BIT
+      string: '{"name":"hotfix","commit":{"sha":"0e799e26257f037376bb4485d9c4066a18f8ab9a","node_id":"MDY6Q29tbWl0MTY3MzU2MDI4OjBlNzk5ZTI2MjU3ZjAzNzM3NmJiNDQ4NWQ5YzQwNjZhMThmOGFiOWE=","commit":{"author":{"name":"Michael
+        Nacos","email":"michael.nacos@digital.education.gov.uk","date":"2020-02-28T12:28:34Z"},"committer":{"name":"GitHub","email":"noreply@github.com","date":"2020-02-28T12:28:34Z"},"message":"Merge
+        pull request #1487 from DFE-Digital/dependabot/bundler/launchy-2.5.0\n\nBump
+        launchy from 2.4.3 to 2.5.0","tree":{"sha":"42764b872c992b01ce15d8324a5229a1e3ef3a7f","url":"https://api.github.com/repos/DFE-Digital/apply-for-postgraduate-teacher-training/git/trees/42764b872c992b01ce15d8324a5229a1e3ef3a7f"},"url":"https://api.github.com/repos/DFE-Digital/apply-for-postgraduate-teacher-training/git/commits/0e799e26257f037376bb4485d9c4066a18f8ab9a","comment_count":0,"verification":{"verified":true,"reason":"valid","signature":"-----BEGIN
+        PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJeWQdyCRBK7hj4Ov3rIwAAdHIIADriMRV9d4cw2cg4c1Jufsgj\nBt8NF2ptL+3/SIr9kAFZWwsHLoG5UcRgHeoLB/4T94W45ApsBNtxqpx0L/zttz6L\nlQjWNER2+U2aIsvjyuPtmcQQqiEt8RVcGbvWua2gdKgJ2gEihOM85NnK5o3qe5o8\nR75pNd49VTw3c7jVlu5aXmczUT7YUOruHbd0JHCq9MAj4xewDjHQzff29Hxarl5D\npg+9AJxF/h5xJ2FWgl72TeWtHBU5LEGRgUNIM34O2h3qnlKQZGn5lHKtzExZ/xfI\ngYOgOdd5VPPhCKmY0HKxd73BJk/9Z4EuSMCEXNM6LQB2VstOZbzIYFTqiPHlFOM=\n=Y/2L\n-----END
+        PGP SIGNATURE-----\n","payload":"tree 42764b872c992b01ce15d8324a5229a1e3ef3a7f\nparent
+        6eaed4cc61cc6b8d1b389bc15aabb6abea88cc3a\nparent aeb3f2326e9a3bf2c082e58b4c5e66a36d5965f4\nauthor
+        Michael Nacos <michael.nacos@digital.education.gov.uk> 1582892914 +0000\ncommitter
+        GitHub <noreply@github.com> 1582892914 +0000\n\nMerge pull request #1487 from
+        DFE-Digital/dependabot/bundler/launchy-2.5.0\n\nBump launchy from 2.4.3 to
+        2.5.0"}},"url":"https://api.github.com/repos/DFE-Digital/apply-for-postgraduate-teacher-training/commits/0e799e26257f037376bb4485d9c4066a18f8ab9a","html_url":"https://github.com/DFE-Digital/apply-for-postgraduate-teacher-training/commit/0e799e26257f037376bb4485d9c4066a18f8ab9a","comments_url":"https://api.github.com/repos/DFE-Digital/apply-for-postgraduate-teacher-training/commits/0e799e26257f037376bb4485d9c4066a18f8ab9a/comments","author":{"login":"mnacos","id":107591,"node_id":"MDQ6VXNlcjEwNzU5MQ==","avatar_url":"https://avatars3.githubusercontent.com/u/107591?v=4","gravatar_id":"","url":"https://api.github.com/users/mnacos","html_url":"https://github.com/mnacos","followers_url":"https://api.github.com/users/mnacos/followers","following_url":"https://api.github.com/users/mnacos/following{/other_user}","gists_url":"https://api.github.com/users/mnacos/gists{/gist_id}","starred_url":"https://api.github.com/users/mnacos/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/mnacos/subscriptions","organizations_url":"https://api.github.com/users/mnacos/orgs","repos_url":"https://api.github.com/users/mnacos/repos","events_url":"https://api.github.com/users/mnacos/events{/privacy}","received_events_url":"https://api.github.com/users/mnacos/received_events","type":"User","site_admin":false},"committer":{"login":"web-flow","id":19864447,"node_id":"MDQ6VXNlcjE5ODY0NDQ3","avatar_url":"https://avatars3.githubusercontent.com/u/19864447?v=4","gravatar_id":"","url":"https://api.github.com/users/web-flow","html_url":"https://github.com/web-flow","followers_url":"https://api.github.com/users/web-flow/followers","following_url":"https://api.github.com/users/web-flow/following{/other_user}","gists_url":"https://api.github.com/users/web-flow/gists{/gist_id}","starred_url":"https://api.github.com/users/web-flow/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/web-flow/subscriptions","organizations_url":"https://api.github.com/users/web-flow/orgs","repos_url":"https://api.github.com/users/web-flow/repos","events_url":"https://api.github.com/users/web-flow/events{/privacy}","received_events_url":"https://api.github.com/users/web-flow/received_events","type":"User","site_admin":false},"parents":[{"sha":"6eaed4cc61cc6b8d1b389bc15aabb6abea88cc3a","url":"https://api.github.com/repos/DFE-Digital/apply-for-postgraduate-teacher-training/commits/6eaed4cc61cc6b8d1b389bc15aabb6abea88cc3a","html_url":"https://github.com/DFE-Digital/apply-for-postgraduate-teacher-training/commit/6eaed4cc61cc6b8d1b389bc15aabb6abea88cc3a"},{"sha":"aeb3f2326e9a3bf2c082e58b4c5e66a36d5965f4","url":"https://api.github.com/repos/DFE-Digital/apply-for-postgraduate-teacher-training/commits/aeb3f2326e9a3bf2c082e58b4c5e66a36d5965f4","html_url":"https://github.com/DFE-Digital/apply-for-postgraduate-teacher-training/commit/aeb3f2326e9a3bf2c082e58b4c5e66a36d5965f4"}]},"_links":{"self":"https://api.github.com/repos/DFE-Digital/apply-for-postgraduate-teacher-training/branches/hotfix","html":"https://github.com/DFE-Digital/apply-for-postgraduate-teacher-training/tree/hotfix"},"protected":false,"protection":{"enabled":false,"required_status_checks":{"enforcement_level":"off","contexts":[]}},"protection_url":"https://api.github.com/repos/DFE-Digital/apply-for-postgraduate-teacher-training/branches/hotfix/protection"}'
+    http_version: 
+  recorded_at: Mon, 02 Mar 2020 15:37:52 GMT
+recorded_with: VCR 5.0.0
