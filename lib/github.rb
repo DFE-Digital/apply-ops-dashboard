@@ -5,6 +5,6 @@ class GitHub
   HOTFIX_BRANCH = 'hotfix'.freeze
 
   def self.client
-    @client ||= Octokit::Client.new(access_token: ENV["GITHUB_TOKEN"])
+    @client ||= Octokit::Client.new(access_token: ENV['GITHUB_TOKEN'])
   end
 end

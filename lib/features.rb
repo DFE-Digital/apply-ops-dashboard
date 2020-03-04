@@ -29,22 +29,21 @@ class Features
 
   def environment_attributes
     {
-      production: {name: 'Production', prefix: 'www'},
-      staging: {name: 'Staging', prefix: 'staging'},
-      sandbox: {name: 'Sandbox', prefix: 'sandbox'},
-      qa: {name: 'QA', prefix: 'qa'}
+      production: { name: 'Production', prefix: 'www' },
+      staging: { name: 'Staging', prefix: 'staging' },
+      sandbox: { name: 'Sandbox', prefix: 'sandbox' },
+      qa: { name: 'QA', prefix: 'qa' },
     }
   end
 
   def sandbox_environments
-    environment_states.reduce([]) do |list, (environment, state)|
-      list.push environment if state["sandbox_mode"]
-      list
+    environment_states.each_with_object([]) do |(environment, state), list|
+      list.push environment if state['sandbox_mode']
     end
   end
 
   def environment_states
-    @_environments ||= {
+    @environment_states ||= {
       production: feature_flags_for(:production),
       staging: feature_flags_for(:staging),
       sandbox: feature_flags_for(:sandbox),
@@ -59,6 +58,7 @@ class Features
   class Feature
     attr_reader :name, :production, :staging, :sandbox, :qa
 
+    # rubocop:disable Naming/MethodParameterName
     def initialize(name:, production:, staging:, sandbox:, qa:)
       @name = name
       @production = production
@@ -66,6 +66,7 @@ class Features
       @staging = staging
       @qa = qa
     end
+    # rubocop:enable Naming/MethodParameterName
 
     def state
       if [production, sandbox, staging, qa].all?
