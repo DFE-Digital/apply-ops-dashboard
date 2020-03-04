@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Features
   def all
     prod, staging, sandbox, qa = environment_states.values_at :production, :staging, :sandbox, :qa

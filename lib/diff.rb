@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Diff
   def self.pull_requests_between(to_sha, from_sha)
     compare = GitHub.client.compare(GitHub::GITHUB_REPO, from_sha, to_sha)

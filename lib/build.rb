@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Build
   def initialize(azure_build)
     @azure_build = azure_build

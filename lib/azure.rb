@@ -1,11 +1,9 @@
-# frozen_string_literal: true
-
 require 'http'
 require 'json'
 
 class Azure
-  ORGANISATION = 'dfe-ssp'
-  PROJECT = 'Become-A-Teacher'
+  ORGANISATION = 'dfe-ssp'.freeze
+  PROJECT = 'Become-A-Teacher'.freeze
 
   # https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1
   def self.get(path, params)
