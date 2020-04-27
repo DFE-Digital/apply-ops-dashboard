@@ -18,9 +18,9 @@
         <th scope="row" class="govuk-table__header apply-feature-header apply-feature-state--<%= feature.state %>"><%= feature.name %></th>
 
         <% %i[production staging sandbox qa].each do |e| %>
-          <td class="govuk-table__cell apply-feature <%= feature.send(e) ? "apply-feature-active" : "apply-feature-inactive" %>">
+          <td class="govuk-table__cell apply-feature apply-feature-<%=feature.send(e) %>">
             <a href="<%= @features.environment_url(e) %>">
-              <%= feature.send(e) ? "Active" : "Inactive" %>
+              <%= feature.send(e).humanize %>
             </a>
           </td>
         <% end %>

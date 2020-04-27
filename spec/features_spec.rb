@@ -37,10 +37,10 @@ RSpec.describe Features do
     result = Features.new.all
 
     new_feature = result.find { |f| f.name == 'Killer robots' }
-    expect(new_feature.qa).to be true
-    expect(new_feature.production).to be false
-    expect(new_feature.staging).to be false
-    expect(new_feature.sandbox).to be false
+    expect(new_feature.qa).to eql 'active'
+    expect(new_feature.production).to eql 'not_deployed'
+    expect(new_feature.staging).to eql 'not_deployed'
+    expect(new_feature.sandbox).to eql 'not_deployed'
   end
 
   it 'handles a feature which is present on non-qa envs but not on qa' do
@@ -61,10 +61,10 @@ RSpec.describe Features do
 
     new_feature = result.find { |f| f.name == 'Killer robots' }
 
-    expect(new_feature.qa).to be false
-    expect(new_feature.production).to be true
-    expect(new_feature.staging).to be false
-    expect(new_feature.sandbox).to be false
+    expect(new_feature.qa).to eql 'not_deployed'
+    expect(new_feature.production).to eql 'active'
+    expect(new_feature.staging).to eql 'not_deployed'
+    expect(new_feature.sandbox).to eql 'not_deployed'
   end
 
   describe '#sandbox_environments' do
