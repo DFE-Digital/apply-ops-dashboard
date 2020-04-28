@@ -73,6 +73,10 @@ body {
   background-color: #00703c;
 }
 
+.apply-feature-not_deployed {
+  background-color: #626a6e;
+}
+
 .apply-feature-state--confused {
   background-color: #d4351c;
 }

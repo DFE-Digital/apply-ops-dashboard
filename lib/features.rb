@@ -10,10 +10,10 @@ class Features
 
       Feature.new(
         name: name,
-        production: prod.dig('feature_flags', id, 'active') || false,
-        staging: staging.dig('feature_flags', id, 'active') || false,
-        sandbox: sandbox.dig('feature_flags', id, 'active') || false,
-        qa: qa.dig('feature_flags', id, 'active') || false,
+        production: bool_to_state(prod.dig('feature_flags', id, 'active')),
+        staging: bool_to_state(staging.dig('feature_flags', id, 'active')),
+        sandbox: bool_to_state(sandbox.dig('feature_flags', id, 'active')),
+        qa: bool_to_state(qa.dig('feature_flags', id, 'active')),
       )
     end
   end
@@ -55,6 +55,16 @@ class Features
     JSON.parse(HTTP.get("#{environment_url(e)}/integrations/feature-flags"))
   end
 
+  def bool_to_state(bool_or_nil)
+    if bool_or_nil == nil
+      'not_deployed'
+    elsif bool_or_nil
+      'active'
+    else
+      'inactive'
+    end
+  end
+
   class Feature
     attr_reader :name, :production, :staging, :sandbox, :qa
 
@@ -69,11 +79,11 @@ class Features
     # rubocop:enable Naming/MethodParameterName
 
     def state
-      if [production, sandbox, staging, qa].all?
+      if [production, sandbox, staging, qa].uniq == ['active']
         'ok'
-      elsif [production, sandbox, staging, qa].none?
+      elsif [production, sandbox, staging, qa].uniq == ['inactive']
         'ok'
-      elsif qa && [production, sandbox, staging].none?
+      elsif qa == 'active' && [production, sandbox, staging].uniq == ['inactive']
         'shipping'
       else
         'confused'
