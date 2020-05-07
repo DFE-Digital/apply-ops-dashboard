@@ -31,7 +31,7 @@ class State
   def latest_build_to(environment)
     return qa_builds.first if environment == 'qa'
 
-    release_builds.find do |build|
+    release_builds.select(&:params).find do |build|
       build.params["deploy_#{environment}"] == 'true'
     end
   end
@@ -39,7 +39,7 @@ class State
   def latest_successfull_build_to(environment)
     return latest_successfull_build_to_qa if environment == 'qa'
 
-    release_builds.find do |build|
+    release_builds.select(&:params).find do |build|
       build.succeeded? && build.params["deploy_#{environment}"] == 'true'
     end
   end
