@@ -1,7 +1,4 @@
-require 'spec_helper'
-require 'deployers'
-require 'timecop'
-require 'climate_control'
+require_relative '../../lib/deployers'
 
 RSpec.describe Deployers do
   around do |ex|

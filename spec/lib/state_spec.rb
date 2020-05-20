@@ -1,10 +1,4 @@
-require 'vcr'
-require 'state'
-
-VCR.configure do |config|
-  config.cassette_library_dir = 'spec/vcr_cassettes'
-  config.hook_into :webmock
-end
+require_relative '../../lib/state'
 
 RSpec.describe State do
   context 'a deploy to production failed' do

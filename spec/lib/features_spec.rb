@@ -1,6 +1,4 @@
-require 'spec_helper'
-require 'features'
-require 'webmock/rspec'
+require_relative '../../lib/features'
 
 RSpec.describe Features do
   before do
