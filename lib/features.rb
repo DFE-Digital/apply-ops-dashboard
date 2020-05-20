@@ -79,11 +79,11 @@ class Features
     # rubocop:enable Naming/MethodParameterName
 
     def state
-      if [production, sandbox, staging, qa].uniq == ['active']
+      if [production, sandbox, staging, qa].uniq == %w[active]
         'ok'
-      elsif [production, sandbox, staging, qa].uniq == ['inactive']
+      elsif [production, sandbox, staging, qa].uniq == %w[inactive]
         'ok'
-      elsif qa == 'active' && [production, sandbox, staging].uniq == ['inactive']
+      elsif qa == 'active' && [production, sandbox, staging].uniq == %w[inactive]
         'shipping'
       else
         'confused'
