@@ -1,5 +1,3 @@
-require 'dotenv/load'
-
 require_relative 'lib/state'
 require_relative 'lib/slack'
 
