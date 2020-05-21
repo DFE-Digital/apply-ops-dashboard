@@ -39,7 +39,7 @@
     </ol>
 
     <label class="govuk-label" style='color: #fff;'>Commit to use <a href='https://dfe-ssp.visualstudio.com/Become-A-Teacher/_build?definitionId=325'>for deploy</a>:</label>
-    <input value='<%= state.latest_successfull_build_to('qa').commit_sha %>' class='govuk-input' %>
+    <input value='<%= state.latest_successfull_build_to('qa').commit_sha %>' class='govuk-input' readonly>
   <% end %>
 <% elsif environment == 'production' %>
   <% prs = Diff.pull_requests_between(state.latest_successfull_build_to('staging').commit_sha, state.latest_successfull_build_to('production').commit_sha) %>
@@ -62,6 +62,6 @@
     </ol>
 
     <label class="govuk-label" style='color: #fff;'>Commit to use <a href='https://dfe-ssp.visualstudio.com/Become-A-Teacher/_build?definitionId=325'>for deploy</a>:</label>
-    <input value='<%= state.latest_successfull_build_to('staging').commit_sha %>' class='govuk-input' %>
+    <input value='<%= state.latest_successfull_build_to('staging').commit_sha %>' class='govuk-input' readonly>
   <% end %>
 <% end %>
