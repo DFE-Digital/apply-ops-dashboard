@@ -1,4 +1,5 @@
-require 'dotenv/load'
+require 'dotenv'
+Dotenv.load('.env.test')
 
 require 'timecop'
 require 'climate_control'
