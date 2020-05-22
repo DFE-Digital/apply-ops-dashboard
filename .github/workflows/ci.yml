@@ -1,0 +1,42 @@
+name: Apply Ops Dashboard CI
+
+on: [push, pull_request] 
+
+jobs:
+  linting:
+    name: Linting
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      name: 'Checkout Code'
+
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: .ruby-version
+
+    - name: Install dependencies
+      run: bundle install
+    - name: Run Rubocop
+      run: bundle exec rubocop
+  
+  rspec:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      name: 'Checkout Code'
+    
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: .ruby-version
+    
+    - name: Install dependencies
+      run: bundle install
+    
+    - name: Run Tests
+      env:
+        DEPLOYERS: 'GitHub'
+      run: |
+        bundle exec rspec
