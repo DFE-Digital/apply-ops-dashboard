@@ -1,6 +1,8 @@
 module Slack
   class << self
     def post_deployers_for_today(deployers)
+      return unless Date.today.on_weekday?
+
       post(text: "Today’s deployer is *#{deployers[0]}*. Reserves: *#{deployers[1]}*, *#{deployers[2]}*")
     end
 
