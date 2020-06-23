@@ -6,6 +6,18 @@ module Slack
       post(text: "Today’s deployer is *#{deployers[0]}*. Reserves: *#{deployers[1]}*, *#{deployers[2]}*")
     end
 
+    def post_confused_features
+      return unless Date.today.on_weekday?
+
+      confused_features = Features.new.all.select { |f| f.state == 'confused' }
+
+      return if confused_features.empty?
+
+      message = confused_features.map { |f| "- '#{f.name}'" }.join("\n")
+
+      post(text: "🥴 Uh-oh! The following feature flags are enabled on production, but not on all other environments:\n\n#{message}\n\n<https://apply-ops-dashboard.herokuapp.com/features|:shipitbeaver: Check the feature flags dashboard>")
+    end
+
   private
 
     def post(text:)
@@ -17,8 +29,12 @@ module Slack
         mrkdwn: true,
       }
 
-      HTTP[content_type: 'application/json']
-        .post(webhook_url, body: payload.to_json)
+      if ENV['DRY_RUN']
+        puts YAML.dump(payload)
+      else
+        HTTP[content_type: 'application/json']
+          .post(webhook_url, body: payload.to_json)
+      end
     end
 
     def webhook_url
