@@ -15,7 +15,7 @@ module Slack
 
       message = confused_features.map { |f| "- '#{f.name}'" }.join("\n")
 
-      post(text: "🥴 Uh-oh! The following feature flags are enabled on production, but not on all other environments:\n\n#{message}\n\n<https://apply-ops-dashboard.herokuapp.com/features|:shipitbeaver: Check the feature flags dashboard>")
+      post(text: "😬 Uh-oh! The following feature flags are inconsistent across Production, Staging and Sandbox:\n\n#{message}\n\n<https://apply-ops-dashboard.herokuapp.com/features|:shipitbeaver: Check the feature flags dashboard>")
     end
 
   private
