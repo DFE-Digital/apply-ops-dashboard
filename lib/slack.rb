@@ -1,3 +1,5 @@
+require 'active_support/all'
+
 module Slack
   class << self
     def post_deployers_for_today(deployers)
