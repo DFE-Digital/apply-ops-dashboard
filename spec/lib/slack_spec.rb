@@ -48,5 +48,14 @@ RSpec.describe Slack do
       expect(slack_request.with(body: hash_including(text: /Uh-oh!.*?Wonky feature/m)))
         .to have_been_made
     end
+
+    it 'sends a message when features are OK' do
+      slack_request = stub_request(:post, 'https://example.com')
+
+      Slack.post_confused_features([])
+
+      expect(slack_request.with(body: hash_including(text: /Feature flags are consistent/)))
+        .to have_been_made
+    end
   end
 end
