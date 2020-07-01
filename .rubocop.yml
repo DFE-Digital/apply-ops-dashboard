@@ -61,3 +61,13 @@ RSpec/PredicateMatcher:
 
 RSpec/DescribeClass:
   Enabled: false
+
+# enabled in advance of these becoming default in Rubocop 1.0
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
