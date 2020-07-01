@@ -9,6 +9,7 @@ namespace :slack do
   end
 
   task :post_confused_features do
-    Slack.post_confused_features
+    confused_features = Features.new.all.select { |f| f.state == 'confused' }
+    Slack.post_confused_features(confused_features)
   end
 end

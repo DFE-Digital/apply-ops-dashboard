@@ -8,10 +8,8 @@ module Slack
       post(text: "Today’s deployer is *#{deployers[0]}*. Reserves: *#{deployers[1]}*, *#{deployers[2]}*")
     end
 
-    def post_confused_features
+    def post_confused_features(confused_features)
       return unless Date.today.on_weekday?
-
-      confused_features = Features.new.all.select { |f| f.state == 'confused' }
 
       return if confused_features.empty?
 
