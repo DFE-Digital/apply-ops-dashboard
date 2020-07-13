@@ -14,7 +14,7 @@ RSpec.describe Features do
 
     result = Features.new.all
 
-    expect(result).to all be_a(Features::Feature)
+    expect(result).to all be_a(Feature)
     expect(result.count).to eq 12
   end
 
