@@ -16,6 +16,8 @@ class Feature
       'ok'
     elsif [production, sandbox, staging, qa].uniq == %w[inactive]
       'ok'
+    elsif [production, sandbox, staging].include?('not_deployed')
+      'ok'
     elsif qa == 'active' && [production, sandbox, staging].uniq == %w[inactive]
       'shipping'
     else
