@@ -20,6 +20,16 @@ module Slack
       end
     end
 
+    def post_undeployed_prs(prs)
+      return unless Date.today.on_weekday?
+
+      message = prs.reduce("The following PRs haven’t been deployed yet:\n") do |str, (author, title)|
+        str + "\n- #{title} (#{author})"
+      end
+
+      post(text: message)
+    end
+
   private
 
     def post(text:)
