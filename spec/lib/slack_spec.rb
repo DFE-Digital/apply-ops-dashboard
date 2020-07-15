@@ -73,5 +73,13 @@ RSpec.describe Slack do
       expect(slack_request.with(body: hash_including(text: /The following PRs.*?Fix a bug \(Alice\)/m)))
         .to have_been_made
     end
+
+    it 'sends no message when there are no undeployed PRs' do
+      slack_request = stub_request(:post, 'https://example.com')
+
+      Slack.post_undeployed_prs([])
+
+      expect(slack_request).not_to have_been_made
+    end
   end
 end
