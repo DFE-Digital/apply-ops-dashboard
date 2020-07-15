@@ -58,4 +58,20 @@ RSpec.describe Slack do
         .to have_been_made
     end
   end
+
+  describe '.post_undeployed_prs' do
+    it 'sends a message when there are undeployed PRs' do
+      slack_request = stub_request(:post, 'https://example.com')
+
+      undeployed = [
+        ['Alice', 'Fix a bug'],
+        ['Bob', 'Ship a feature'],
+      ]
+
+      Slack.post_undeployed_prs(undeployed)
+
+      expect(slack_request.with(body: hash_including(text: /The following PRs.*?Fix a bug \(Alice\)/m)))
+        .to have_been_made
+    end
+  end
 end
