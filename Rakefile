@@ -15,6 +15,7 @@ namespace :slack do
   end
 
   task :post_undeployed_prs do
+    state = State.new
     prs = Diff.pull_requests_between(state.latest_successfull_build_to('qa').commit_sha, state.latest_successfull_build_to('production').commit_sha)
     Slack.post_undeployed_prs(prs)
   end
