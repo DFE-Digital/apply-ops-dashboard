@@ -1,5 +1,5 @@
 require_relative '../../lib/slack'
-require_relative '../../lib/features'
+require_relative '../../lib/feature'
 
 RSpec.describe Slack do
   around do |ex|
@@ -38,7 +38,7 @@ RSpec.describe Slack do
   describe '.post_confused_features' do
     it 'sends a message when features are confused' do
       confused_features = [
-        Features::Feature.new(name: 'Wonky feature', production: true, staging: false, sandbox: false, qa: false),
+        Feature.new(name: 'Wonky feature', production: true, staging: false, sandbox: false, qa: false),
       ]
 
       slack_request = stub_request(:post, 'https://example.com')
