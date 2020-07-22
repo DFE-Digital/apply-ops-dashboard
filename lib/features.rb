@@ -22,7 +22,7 @@ class Features
 
   def environment_url(e)
     prefix = environment_attributes[e][:prefix]
-    "https://#{prefix}.apply-for-teacher-training.education.gov.uk"
+    "https://#{prefix}.apply-for-teacher-training.service.gov.uk"
   end
 
   def environment_name(e)

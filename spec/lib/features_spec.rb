@@ -8,7 +8,7 @@ RSpec.describe Features do
 
   it 'constructs an mapping for each feature' do
     ENVS.each do |env|
-      stub_request(:get, "https://#{env}.apply-for-teacher-training.education.gov.uk/integrations/feature-flags")
+      stub_request(:get, "https://#{env}.apply-for-teacher-training.service.gov.uk/integrations/feature-flags")
         .to_return(body: EXAMPLE_JSON)
     end
 
@@ -25,11 +25,11 @@ RSpec.describe Features do
     json_with_a_new_flag['feature_flags']['killer_robots'] = { 'name' => 'Killer robots', 'active' => true }
 
     (ENVS - %w[qa]).each do |env|
-      stub_request(:get, "https://#{env}.apply-for-teacher-training.education.gov.uk/integrations/feature-flags")
+      stub_request(:get, "https://#{env}.apply-for-teacher-training.service.gov.uk/integrations/feature-flags")
         .to_return(body: standard_json)
     end
 
-    stub_request(:get, 'https://qa.apply-for-teacher-training.education.gov.uk/integrations/feature-flags')
+    stub_request(:get, 'https://qa.apply-for-teacher-training.service.gov.uk/integrations/feature-flags')
       .to_return(body: json_with_a_new_flag.to_json)
 
     result = Features.new.all
@@ -48,11 +48,11 @@ RSpec.describe Features do
     json_with_a_new_flag['feature_flags']['killer_robots'] = { 'name' => 'Killer robots', 'active' => true }
 
     (ENVS - %w[www]).each do |env|
-      stub_request(:get, "https://#{env}.apply-for-teacher-training.education.gov.uk/integrations/feature-flags")
+      stub_request(:get, "https://#{env}.apply-for-teacher-training.service.gov.uk/integrations/feature-flags")
         .to_return(body: standard_json)
     end
 
-    stub_request(:get, 'https://www.apply-for-teacher-training.education.gov.uk/integrations/feature-flags')
+    stub_request(:get, 'https://www.apply-for-teacher-training.service.gov.uk/integrations/feature-flags')
       .to_return(body: json_with_a_new_flag.to_json)
 
     result = Features.new.all
@@ -71,12 +71,12 @@ RSpec.describe Features do
       sandbox_mode_json['sandbox_mode'] = true
 
       %w[www staging].each do |env|
-        stub_request(:get, "https://#{env}.apply-for-teacher-training.education.gov.uk/integrations/feature-flags")
+        stub_request(:get, "https://#{env}.apply-for-teacher-training.service.gov.uk/integrations/feature-flags")
           .to_return(body: EXAMPLE_JSON)
       end
 
       %w[qa sandbox].each do |env|
-        stub_request(:get, "https://#{env}.apply-for-teacher-training.education.gov.uk/integrations/feature-flags")
+        stub_request(:get, "https://#{env}.apply-for-teacher-training.service.gov.uk/integrations/feature-flags")
           .to_return(body: sandbox_mode_json.to_json)
       end
 
