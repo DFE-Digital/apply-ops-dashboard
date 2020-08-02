@@ -38,8 +38,12 @@
       <% end %>
     </ol>
 
-    <label class="govuk-label" style='color: #fff;'>Commit to use <a href='https://dfe-ssp.visualstudio.com/Become-A-Teacher/_build?definitionId=325'>for deploy</a>:</label>
-    <input value='<%= state.latest_successfull_build_to('qa').commit_sha %>' class='govuk-input' readonly>
+    <div class="govuk-grid-row" id="staging-deploy">
+        <input value='<%= state.latest_successfull_build_to('qa').commit_sha %>' class='govuk-input govuk-!-width-two-thirds' readonly>
+        <button data-prevent-double-click="true" class="govuk-button" data-module="govuk-button" onclick="onDeployButtonClick('<%= state.latest_successfull_build_to('qa').commit_sha %>', 'staging');">
+           Deploy
+        </button>
+    </div>
   <% end %>
 <% elsif environment == 'production' %>
   <% prs = Diff.pull_requests_between(state.latest_successfull_build_to('staging').commit_sha, state.latest_successfull_build_to('production').commit_sha) %>
@@ -61,7 +65,11 @@
       <% end %>
     </ol>
 
-    <label class="govuk-label" style='color: #fff;'>Commit to use <a href='https://dfe-ssp.visualstudio.com/Become-A-Teacher/_build?definitionId=325'>for deploy</a>:</label>
-    <input value='<%= state.latest_successfull_build_to('staging').commit_sha %>' class='govuk-input' readonly>
+    <div class="govuk-grid-row" id="production-deploy">
+        <input value='<%= state.latest_successfull_build_to('staging').commit_sha %>' class='govuk-input govuk-!-width-two-thirds' readonly>
+        <button data-prevent-double-click="true" class="govuk-button" data-module="govuk-button" onclick="onDeployButtonClick('<%= state.latest_successfull_build_to('staging').commit_sha %>', 'production');">
+           Deploy
+        </button>
+    </div>
   <% end %>
 <% end %>
