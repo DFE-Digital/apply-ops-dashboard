@@ -58,7 +58,7 @@ class Features
   end
 
   def bool_to_state(bool_or_nil)
-    if bool_or_nil == nil
+    if bool_or_nil.nil?
       'not_deployed'
     elsif bool_or_nil
       'active'
