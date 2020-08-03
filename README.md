@@ -14,11 +14,18 @@ Local development needs 3 environment variables:
 
 Run the app:
 
-```
-foreman start
+```bash
+make start
 ```
 
-The app will appear on <http://localhost:5000>.
+Run the app in dev watch mode:
+
+```bash
+make start-dev
+```
+`make start-dev` will mount your local folder as the container work directory.
+
+The app will be available on <http://localhost:5000> for both the commands.
 
 ## Deployment rota
 
@@ -31,13 +38,13 @@ away.
 
 You can run the tests, such as they are, with:
 
-```
+```bash
 bundle exec rspec
 ```
 
 You can run Rubocop with:
 
-```
+```bash
 bundle exec rubocop
 ```
 
