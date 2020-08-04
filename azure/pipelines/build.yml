@@ -10,35 +10,79 @@ pr:
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- script: |
-    echo "##vso[build.updatebuildnumber]$(git rev-parse --short HEAD)"
-  displayName: Set Build Number
-  
-- task: UseRubyVersion@0
-  displayName: Use Ruby Version > 2.7
-  inputs:
-    versionSpec: '>= 2.7'
+stages:
+- stage: build
+  displayName: Build
+  jobs:
+  - job:
+    displayName: Build 
+    steps:
+    - script: |
+        echo "##vso[build.updatebuildnumber]$(git rev-parse --short HEAD)"
+      displayName: Set Build Number
+      
+    - task: UseRubyVersion@0
+      displayName: Use Ruby Version > 2.7
+      inputs:
+        versionSpec: '>= 2.7'
+    
+    - script: |
+        ruby --version
+        gem install bundler:2.1.4
+        bundle install --retry=3 --jobs=4
+      displayName: 'bundle install'
+    
+    - script: bundle exec rubocop
+      displayName: 'Run RuboCop'
+    
+    - script: bundle exec rspec
+      displayName: 'Run RSpec'
+      env:
+        DEPLOYERS: 'AzureDevOps'
+    
+    - task: Docker@2
+      displayName: Build Docker
+      inputs:
+        containerRegistry: 'DfE Docker Hub'
+        repository: 'dfedigital/apply-ops-dashboard'
+        command: 'buildAndPush'
+        tags: |
+          $(Build.BuildNumber)
 
-- script: |
-    ruby --version
-    gem install bundler:2.1.4
-    bundle install --retry=3 --jobs=4
-  displayName: 'bundle install'
+    - publish: $(System.DefaultWorkingDirectory)/azure/template.json
+      artifact: azure
+      displayName: Publish ARM template artifact
 
-- script: bundle exec rubocop
-  displayName: 'Run RuboCop'
-
-- script: bundle exec rspec
-  displayName: 'Run RSpec'
-  env:
-    DEPLOYERS: 'AzureDevOps'
-
-- task: Docker@2
-  displayName: Build Docker
-  inputs:
-    containerRegistry: 'DfE Docker Hub'
-    repository: 'dfedigital/apply-ops-dashboard'
-    command: 'buildAndPush'
-    tags: |
-      $(Build.BuildNumber)
+- stage: deploy
+  displayName: Deploy
+  dependsOn: build
+  condition: and(succeeded(), eq('refs/heads/master', variables['Build.SourceBranch']))
+  jobs:
+  - deployment: 
+    environment: 'apply-ops-dashboard'
+    pool:
+      vmImage: 'ubuntu-latest'
+    variables:
+    - group: APPLY - OPS - DASHBOARD
+    strategy:
+     runOnce:
+       deploy:
+         steps:
+         - task: AzureResourceManagerTemplateDeployment@3
+           inputs:
+             deploymentScope: 'Resource Group'
+             azureResourceManagerConnection: 'Apply (106) - Dev'
+             subscriptionId: $(azureSubscription)
+             action: 'Create Or Update Resource Group'
+             resourceGroupName: $(resourceGroupName)
+             location: 'West Europe'
+             templateLocation: 'Linked artifact'
+             csmFile: '$(Pipeline.Workspace)/azure/template.json'
+             deploymentMode: 'Incremental'
+             deploymentName: '$(Build.BuildNumber)'
+             overrideParameters: '-subscriptionPrefix "$(subscriptionPrefix)"
+              -apply-ops-dashboard-docker-image "dfedigital/apply-ops-dashboard:$(Build.BuildNumber)"
+              -AZURE_ACCESS_TOKEN "$(AZURE_ACCESS_TOKEN)"
+              -AZURE_USERNAME "$(AZURE_USERNAME)"
+              -GITHUB_TOKEN "$(GITHUB_TOKEN)"
+              -DEPLOYERS "$(DEPLOYERS)"'
