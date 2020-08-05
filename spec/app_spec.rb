@@ -13,7 +13,7 @@ RSpec.describe 'The Apply Ops Dashboard' do
         get '/'
       end
     end
-
+    puts last_response.inspect
     expect(last_response).to be_ok
   end
 end
