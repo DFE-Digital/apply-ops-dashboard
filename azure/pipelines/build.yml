@@ -38,7 +38,7 @@ stages:
     - script: bundle exec rspec
       displayName: 'Run RSpec'
       env:
-        DEPLOYERS: 'AzureDevOps'
+        DEPLOYERS: '[{"displayName":"AzureDevOps", "slackUserId":"1"}]'
     
     - task: Docker@2
       displayName: Build Docker
@@ -85,4 +85,4 @@ stages:
               -AZURE_ACCESS_TOKEN "$(AZURE_ACCESS_TOKEN)"
               -AZURE_USERNAME "$(AZURE_USERNAME)"
               -GITHUB_TOKEN "$(GITHUB_TOKEN)"
-              -DEPLOYERS "$(DEPLOYERS)"'
+              -DEPLOYERS $(DEPLOYERS)'
