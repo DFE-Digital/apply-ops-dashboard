@@ -2,7 +2,7 @@ require_relative '../../lib/deployers'
 
 RSpec.describe Deployers do
   around do |ex|
-    ClimateControl.modify DEPLOYERS: 'one,two,three,four,five,six,seven' do
+    ClimateControl.modify DEPLOYERS: '[{"name":"One","userId":"1"},{"name":"Two","userId":"2"},{"name":"Three","userId":"3"},{"name":"Four","userId":"4"},{"name":"Five","userId":"5"}]' do
       ex.run
     end
   end
