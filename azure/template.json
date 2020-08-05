@@ -1,0 +1,173 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "subscriptionPrefix":{
+            "type": "string",
+            "allowedValues": ["s106d01", "s106d02", "s106t01", "s106t02", "s106p01"]
+        },
+        "apply-ops-dashboard-site-name": {
+            "defaultValue": "apply-ops-dashboard",
+            "type": "string"
+        },
+        "apply-ops-dashboard-docker-image": {
+            "type": "string"
+        },
+        "AZURE_ACCESS_TOKEN":{
+            "type": "secureString"
+        },
+        "AZURE_USERNAME":{
+            "type": "secureString"
+        },
+        "GITHUB_TOKEN":{
+            "type": "secureString"
+        },
+        "DEPLOYERS":{
+            "type": "string"
+        }
+    },
+    "variables": {
+        "hostingPlanName": "[concat(parameters('subscriptionPrefix'),'-', parameters('apply-ops-dashboard-site-name'), '-asp')]",
+        "storageAccountName": "[concat(parameters('subscriptionPrefix'), 'applyopsdashstore')]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2019-06-01",
+            "type": "Microsoft.Storage/storageAccounts",
+            "name": "[variables('storageAccountName')]",
+            "location": "[resourceGroup().location]",
+            "tags": {},
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "properties": {
+                "supportsHttpsTrafficOnly": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2018-02-01",
+            "name": "[variables('hostingPlanName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "EP1",
+                "tier": "ElasticPremium",
+                "size": "EP1",
+                "family": "EP",
+                "capacity": 1
+            },
+            "kind": "elastic",
+            "properties": {
+                "perSiteScaling": false,
+                "maximumElasticWorkerCount": 1,
+                "isSpot": false,
+                "reserved": true,
+                "isXenon": false,
+                "hyperV": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2018-11-01",
+            "name": "[parameters('apply-ops-dashboard-site-name')]",
+            "location": "[resourceGroup().location]",
+            "kind": "functionapp,linux,container",
+            "dependsOn": [
+                "[concat('Microsoft.Web/serverfarms/', variables('hostingPlanName'))]",
+                "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
+            ],
+            "properties": {
+                "enabled": true,
+                "reserved": true,
+                "name": "[parameters('apply-ops-dashboard-site-name')]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(parameters('apply-ops-dashboard-site-name'), '.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(parameters('apply-ops-dashboard-site-name'), '.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "httpsOnly": true,
+                "redundancyMode": "None",
+                "siteConfig": {
+                    "appSettings":[
+                        {
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
+                            "value": "~3"
+                        },
+                        {
+                            "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+                            "value": "false"
+                        },
+                        {
+                            "name": "WEBSITE_TIME_ZONE",
+                            "value": "Europe/London"
+                        },
+                        {
+                            "name": "WEBSITES_PORT",
+                            "value": "5000"
+                        },
+                        {
+                            "name": "AzureWebJobsStorage",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTSHARE",
+                            "value": "[concat(toLower(parameters('apply-ops-dashboard-site-name')), 'f450')]"
+                        },
+                        {
+                            "name": "DOCKER_REGISTRY_SERVER_URL",
+                            "value": "https://index.docker.io"
+                        },
+                        {
+                            "name": "AZURE_ACCESS_TOKEN",
+                            "value": "[parameters('AZURE_ACCESS_TOKEN')]"
+                        },
+                        {
+                            "name": "AZURE_USERNAME",
+                            "value": "[parameters('AZURE_USERNAME')]"
+                        },
+                        {
+                            "name": "GITHUB_TOKEN",
+                            "value": "[parameters('GITHUB_TOKEN')]"
+                        },
+                        {
+                            "name": "DEPLOYERS",
+                            "value": "[parameters('DEPLOYERS')]"
+                        }
+                    ],
+                    "linuxFxVersion": "[concat('DOCKER|', parameters('apply-ops-dashboard-docker-image'))]",
+                    "minTlsVersion": "1.2",
+                    "http20Enabled": true,
+                    "ftpsState": "Disabled",
+                    "reservedInstanceCount": 1
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('apply-ops-dashboard-site-name'), '/', parameters('apply-ops-dashboard-site-name'), '.azurewebsites.net')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('apply-ops-dashboard-site-name'))]"
+            ],
+            "properties": {
+                "siteName": "[parameters('apply-ops-dashboard-site-name')]",
+                "hostNameType": "Verified"
+            }
+        }
+    ]
+}

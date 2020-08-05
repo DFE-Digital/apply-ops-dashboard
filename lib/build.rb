@@ -4,7 +4,7 @@ class Build
   end
 
   def start_time
-    DateTime.parse(azure_build['queueTime']).strftime('%m/%d/%Y %I:%M%p')
+    Time.parse(azure_build['queueTime']).strftime('%m/%d/%Y %I:%M%p')
   end
 
   def succeeded?

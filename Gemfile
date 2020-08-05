@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'activesupport'
-gem 'foreman'
 gem 'http'
 gem 'octokit'
 gem 'rake'
