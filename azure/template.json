@@ -24,6 +24,9 @@
         },
         "DEPLOYERS":{
             "type": "string"
+        },
+        "SLACK_WEBHOOK_URL":{
+            "type": "string"
         }
     },
     "variables": {
@@ -146,6 +149,10 @@
                         {
                             "name": "DEPLOYERS",
                             "value": "[parameters('DEPLOYERS')]"
+                        },
+                        {
+                            "name": "SLACK_WEBHOOK_URL",
+                            "value": "[parameters('SLACK_WEBHOOK_URL')]"
                         }
                     ],
                     "linuxFxVersion": "[concat('DOCKER|', parameters('apply-ops-dashboard-docker-image'))]",
