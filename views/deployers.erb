@@ -3,10 +3,10 @@
     <div class="govuk-body">
       <ul>
         <h3 class="govuk-heading-m">
-          Today's deployer is <%= state.deployers_for_today.first %>
+          Today's deployer is <%= state.todays_deployer %>
         </h3>
         <p class="govuk-heading-s">
-          Reserves: <%= state.deployers_for_today.slice(1..2).join(', ') %>
+          Reserves: <%= state.todays_reserves %>
         </p>
       </ul>
     </div>

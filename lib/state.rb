@@ -52,6 +52,14 @@ class State
     Deployers.for_today
   end
 
+  def todays_deployer
+    Deployers.for_today[0]['displayName']
+  end
+
+  def todays_reserves
+    Deployers.for_today.slice(1..2).map { |d| d['displayName'] }.join(', ')
+  end
+
   def hotfix_in_progress?
     GitHub.client.branch(GitHub::GITHUB_REPO, GitHub::HOTFIX_BRANCH).present?
   rescue Octokit::NotFound

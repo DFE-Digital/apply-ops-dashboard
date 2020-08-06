@@ -5,7 +5,7 @@ module Slack
     def post_deployers_for_today(deployers)
       return unless Date.today.on_weekday?
 
-      post(text: "Today’s deployer is *#{deployers[0]}*. Reserves: *#{deployers[1]}*, *#{deployers[2]}*")
+      post(text: "Today’s deployer is *<@#{deployers[0]['slackUserId']}>*.\n\nReserves: *<@#{deployers[1]['slackUserId']}>* and *<@#{deployers[2]['slackUserId']}>*")
     end
 
     def post_confused_features(confused_features)
@@ -16,7 +16,7 @@ module Slack
       else
         message = confused_features.map { |f| "- '#{f.name}'" }.join("\n")
 
-        post(text: "😬 Uh-oh! The following feature flags are inconsistent across Production, Staging and Sandbox:\n\n#{message}\n\n<https://apply-ops-dashboard.herokuapp.com/features|:shipitbeaver: Check the feature flags dashboard>")
+        post(text: "😬 Uh-oh! The following feature flags are inconsistent across Production, Staging and Sandbox:\n\n#{message}\n\n<https://apply-ops-dashboard.azurewebsites.net/features|:shipitbeaver: Check the feature flags dashboard>")
       end
     end
 

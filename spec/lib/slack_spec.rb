@@ -10,7 +10,7 @@ RSpec.describe Slack do
 
   describe '.post_deployers_for_today' do
     it 'sends a message to slack' do
-      deployers = %w[A B C]
+      deployers = JSON.parse('[{"displayName":"One","slackUserId":"1"},{"displayName":"Two","slackUserId":"2"},{"displayName":"Three","slackUserId":"3"}]')
 
       slack_request = stub_request(:post, 'https://example.com')
 
@@ -18,7 +18,7 @@ RSpec.describe Slack do
         Slack.post_deployers_for_today(deployers)
       end
 
-      expect(slack_request.with(body: hash_including(text: 'Today’s deployer is *A*. Reserves: *B*, *C*')))
+      expect(slack_request.with(body: hash_including(text: "Today’s deployer is *\u003c@1\u003e*.\n\nReserves: *\u003c@2\u003e* and *\u003c@3\u003e*")))
         .to have_been_made
     end
 
