@@ -5,6 +5,7 @@ gem 'http'
 gem 'octokit'
 gem 'rake'
 gem 'sinatra'
+gem 'clockwork', '~> 2.0'
 
 group :test do
   gem 'climate_control'

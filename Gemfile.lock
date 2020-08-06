@@ -11,6 +11,9 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.1)
     climate_control (0.2.0)
+    clockwork (2.0.4)
+      activesupport
+      tzinfo
     concurrent-ruby (1.1.6)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
@@ -127,6 +130,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   climate_control
+  clockwork (~> 2.0)
   dotenv
   http
   octokit
