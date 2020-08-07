@@ -11,9 +11,15 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.1)
     climate_control (0.2.0)
+    clockwork (2.0.4)
+      activesupport
+      tzinfo
+    clockworkd (0.2.5)
+      tzinfo (>= 0.3.23)
     concurrent-ruby (1.1.6)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
+    daemons (1.3.1)
     diff-lcs (1.4.4)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
@@ -127,6 +133,9 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   climate_control
+  clockwork (~> 2.0)
+  clockworkd (~> 0.2.5)
+  daemons (~> 1.3)
   dotenv
   http
   octokit

@@ -5,3 +5,5 @@ spec/examples.txt
 .envrc
 ## asdf for running multiple ruby versions
 .tool-versions
+#clockworkd gem to run tasks as daemons
+*.pid
