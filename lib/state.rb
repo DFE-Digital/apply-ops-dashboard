@@ -32,7 +32,7 @@ class State
     return qa_builds.first if environment == 'qa'
 
     release_builds.select(&:params).find do |build|
-      build.params["deploy_#{environment}"] == 'true'
+      build.params["deploy_#{environment}"].to_s == 'true'
     end
   end
 

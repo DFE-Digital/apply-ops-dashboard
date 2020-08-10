@@ -30,13 +30,20 @@ module Slack
       post(text: message)
     end
 
+    def post_prs_being_deployed(prs, target_environment)
+      message = prs.reduce("The following PRs are being deployed to *#{target_environment}* :ship_it_parrot:\n") do |str, (author, title)|
+        str + "🚢 #{title} (#{author})\n"
+      end
+      post(text: message, channel: '#twd_apply')
+    end
+
   private
 
-    def post(text:)
+    def post(text: '', channel: '#twd_apply_tech')
       payload = {
         username: 'Apply ops dashboard',
         icon_emoji: ':train-beaver:',
-        channel: '#twd_apply_tech',
+        channel: channel,
         text: text,
         mrkdwn: true,
       }

@@ -15,4 +15,9 @@ namespace :slack do
   task :post_undeployed_prs do
     Notify.inconsistent_feature_flags
   end
+
+  desc 'Post PRs being deployed'
+  task :post_prs_being_deployed do
+    Notify.prs_being_deployed
+  end
 end
