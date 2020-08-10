@@ -40,7 +40,7 @@ class State
     return latest_successfull_build_to_qa if environment == 'qa'
 
     release_builds.select(&:params).find do |build|
-      build.succeeded? && build.params["deploy_#{environment}"] == 'true'
+      build.succeeded? && build.params["deploy_#{environment}"].to_s == 'true'
     end
   end
 
@@ -78,6 +78,7 @@ private
         'api-version' => '5.1',
         'definitions' => 49, # CI pipeline ID
         'branchName' => 'refs/heads/master',
+        '$top' => 50,
       }
 
       Azure.get('/build/builds', params)
@@ -89,6 +90,7 @@ private
       params = {
         'api-version' => '5.1',
         'definitions' => 325, # release pipeline ID
+        '$top' => 10,
       }
 
       Azure.get('/build/builds', params)

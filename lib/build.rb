@@ -16,7 +16,7 @@ class Build
   end
 
   def in_progress?
-    result.nil?
+    status == 'inProgress'
   end
 
   def deployer_name
@@ -47,5 +47,10 @@ private
   # https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1#buildresult
   def result
     azure_build['result']
+  end
+
+  # https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1#buildstatus
+  def status
+    azure_build['status']
   end
 end
