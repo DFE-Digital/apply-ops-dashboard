@@ -153,6 +153,10 @@
                         {
                             "name": "SLACK_WEBHOOK_URL",
                             "value": "[parameters('SLACK_WEBHOOK_URL')]"
+                        },
+                        {
+                            "name" : "RACK_ENV",
+                            "value": "production"
                         }
                     ],
                     "linuxFxVersion": "[concat('DOCKER|', parameters('apply-ops-dashboard-docker-image'))]",

@@ -19,4 +19,11 @@ class Notify
     confused_features = Features.new.all.select { |f| f.state == 'confused' }
     Slack.post_confused_features(confused_features)
   end
+
+  def self.prs_being_deployed(target_environment)
+    state = State.new
+    from_environment = target_environment == 'staging' ? 'qa' : 'staging'
+    prs = Diff.pull_requests_between(state.latest_successfull_build_to(from_environment).commit_sha, state.latest_successfull_build_to(target_environment).commit_sha)
+    Slack.post_prs_being_deployed(prs, target_environment) unless prs.empty?
+  end
 end

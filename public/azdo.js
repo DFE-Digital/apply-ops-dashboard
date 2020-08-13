@@ -26,9 +26,9 @@ function onDeployButtonClick(commitSha, deployEnv) {
   getAccount()
     .then((response) => {
       if (response.tokenType === "access_token") {
-        triggerBuild(commitSha, response.accessToken, deployEnv);
+        return triggerBuild(commitSha, response.accessToken, deployEnv);
       } else {
-        acquireAccessToken().then((token) =>
+        return acquireAccessToken().then((token) =>
           triggerBuild(commitSha, token, deployEnv)
         );
       }
@@ -36,6 +36,7 @@ function onDeployButtonClick(commitSha, deployEnv) {
     .then(() => {
       clearInterval(inProgressTimer);
       document.getElementById(rowId).removeChild(progressLabel);
+      setTimeout( _ => window.location.reload(), 30000);
     })
     .catch((error) => {
       logError(error);
@@ -138,7 +139,11 @@ function triggerBuild(commitSha, accessToken, deployEnv) {
   const azurePipelinesBuildApi =
     "https://dev.azure.com/dfe-ssp/Become-A-Teacher/_apis/build/builds?api-version=5.1";
 
-  fetch(azurePipelinesBuildApi, requestOptions)
+  fetch(`/webhooks/deploy-in-progress?target_environment=${deployEnv}`, requestOptions)
+  .then((response) => console.log(response))
+  .catch(logError);
+
+  return fetch(azurePipelinesBuildApi, requestOptions)
     .then((response) => {
       console.log(response);
       return response.json();
