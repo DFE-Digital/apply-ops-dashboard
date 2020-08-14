@@ -39,10 +39,15 @@
     </ol>
 
     <div class="govuk-grid-row" id="staging-deploy">
-        <input value='<%= state.latest_successfull_build_to('qa').commit_sha %>' class='govuk-input govuk-!-width-two-thirds' readonly>
-        <button data-prevent-double-click="true" class="govuk-button" data-module="govuk-button" onclick="onDeployButtonClick('<%= state.latest_successfull_build_to('qa').commit_sha %>', 'staging');">
-           Deploy
+      <div class="govuk-grid-column-three-quarters">
+        <label class="govuk-visually-hidden" for="staging-deploy-input">Commit SHA for the staging deploy</label>
+        <input id="staging-deploy-input" value='<%= state.latest_successfull_build_to('qa').commit_sha %>' class='govuk-input' readonly>
+      </div>
+      <div class="govuk-grid-column-one-quarter">
+        <button data-prevent-double-click="true" class="govuk-button" data-module="govuk-button" onclick="onDeployButtonClick('<%= state.latest_successfull_build_to('qa').commit_sha %>', 'staging');" style="width: 100%">
+           Deploy 🚢
         </button>
+      </div>
     </div>
   <% end %>
 <% elsif environment == 'production' %>
@@ -66,10 +71,15 @@
     </ol>
 
     <div class="govuk-grid-row" id="production-deploy">
-        <input value='<%= state.latest_successfull_build_to('staging').commit_sha %>' class='govuk-input govuk-!-width-two-thirds' readonly>
-        <button data-prevent-double-click="true" class="govuk-button" data-module="govuk-button" onclick="onDeployButtonClick('<%= state.latest_successfull_build_to('staging').commit_sha %>', 'production');">
-           Deploy
+      <div class="govuk-grid-column-three-quarters">
+        <label class="govuk-visually-hidden" for="staging-deploy-input">Commit SHA for the production deploy</label>
+        <input id="production-deploy-input" value='<%= state.latest_successfull_build_to('staging').commit_sha %>' class='govuk-input' readonly>
+      </div>
+      <div class="govuk-grid-column-one-quarter">
+        <button data-prevent-double-click="true" class="govuk-button" data-module="govuk-button" onclick="onDeployButtonClick('<%= state.latest_successfull_build_to('staging').commit_sha %>', 'production');" style="width: 100%">
+           Deploy 🚢
         </button>
+      </div>
     </div>
   <% end %>
 <% end %>
