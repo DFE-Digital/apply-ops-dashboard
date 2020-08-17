@@ -7,7 +7,11 @@ class Diff
     end
 
     merge_commits.compact.map do |commit|
-      [commit.to_h.dig(:commit, :author, :name), commit[:commit][:message].lines.last]
+      [
+        commit.to_h.dig(:commit, :author, :name),
+        commit[:commit][:message].lines.last,
+        commit[:commit][:message][/#\w+/].gsub('#', ''),
+      ]
     end
   end
 end
