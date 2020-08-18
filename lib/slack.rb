@@ -31,8 +31,8 @@ module Slack
     end
 
     def post_prs_being_deployed(prs, target_environment)
-      message = prs.reduce("The following PRs are being deployed to *#{target_environment}* :ship_it_parrot:\n") do |str, (author, title)|
-        str + "🚢 #{title} (#{author})\n"
+      message = prs.reduce("The following PRs are being deployed to *#{target_environment}* :ship_it_parrot:\n") do |str, (author, title, pr_number)|
+        str + "- <https://github.com/DFE-Digital/apply-for-teacher-training/pull/#{pr_number}|#{title}> (#{author})\n"
       end
       post(text: message, channel: '#twd_apply')
     end
