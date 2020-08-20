@@ -8,27 +8,41 @@ RSpec.describe Slack do
     end
   end
 
-  describe '.post_deployers_for_today' do
+  describe '.daily_deployment_message' do
     it 'sends a message to slack' do
-      deployers = JSON.parse('[{"displayName":"One","slackUserId":"1"},{"displayName":"Two","slackUserId":"2"},{"displayName":"Three","slackUserId":"3"}]')
-
       slack_request = stub_request(:post, 'https://example.com')
 
+      deployers = JSON.parse('[{"displayName":"One","slackUserId":"1"},{"displayName":"Two","slackUserId":"2"},{"displayName":"Three","slackUserId":"3"}]')
+
+      undeployed = [
+        ['Alice', 'Fix a bug'],
+        ['Bob', 'Ship a feature'],
+      ]
+
       Timecop.freeze('2020-05-27') do
-        Slack.post_deployers_for_today(deployers)
+        Slack.daily_deployment_message(deployers, undeployed)
       end
 
-      expect(slack_request.with(body: hash_including(text: "Today’s deployer is *\u003c@1\u003e*.\n\nReserves: *\u003c@2\u003e* and *\u003c@3\u003e*")))
+      expect(slack_request.with(body: hash_including(text: "Good afternoon! Today’s deployer is *\u003c@1\u003e*. Reserves are *\u003c@2\u003e* and *\u003c@3\u003e*.\n\nThe following PRs haven’t been deployed yet:\n\n- \u003chttps://github.com/DFE-Digital/apply-for-teacher-training/pull/|Fix a bug\u003e (Alice)\n- \u003chttps://github.com/DFE-Digital/apply-for-teacher-training/pull/|Ship a feature\u003e (Bob)")))
+        .to have_been_made
+    end
+
+    it 'sends a special message when there are no undeployed PRs' do
+      slack_request = stub_request(:post, 'https://example.com')
+
+      deployers = JSON.parse('[{"displayName":"One","slackUserId":"1"},{"displayName":"Two","slackUserId":"2"},{"displayName":"Three","slackUserId":"3"}]')
+
+      Slack.daily_deployment_message(deployers, [])
+
+      expect(slack_request.with(body: hash_including(text: "Good afternoon! Today’s deployer is *\u003c@1\u003e*, but there's **nothing to deploy** - go out and have an ice cream, *\u003c@1\u003e*!")))
         .to have_been_made
     end
 
     it 'takes the weekend off' do
-      deployers = %w[A B C]
-
       slack_request = stub_request(:post, 'https://example.com')
 
       Timecop.freeze('2020-05-24') do
-        Slack.post_deployers_for_today(deployers)
+        Slack.daily_deployment_message([], [])
       end
 
       expect(slack_request).not_to have_been_made
@@ -56,30 +70,6 @@ RSpec.describe Slack do
 
       expect(slack_request.with(body: hash_including(text: /Feature flags are consistent/)))
         .to have_been_made
-    end
-  end
-
-  describe '.post_undeployed_prs' do
-    it 'sends a message when there are undeployed PRs' do
-      slack_request = stub_request(:post, 'https://example.com')
-
-      undeployed = [
-        ['Alice', 'Fix a bug'],
-        ['Bob', 'Ship a feature'],
-      ]
-
-      Slack.post_undeployed_prs(undeployed)
-
-      expect(slack_request.with(body: hash_including(text: /The following PRs.*?Fix a bug \(Alice\)/m)))
-        .to have_been_made
-    end
-
-    it 'sends no message when there are no undeployed PRs' do
-      slack_request = stub_request(:post, 'https://example.com')
-
-      Slack.post_undeployed_prs([])
-
-      expect(slack_request).not_to have_been_made
     end
   end
 end

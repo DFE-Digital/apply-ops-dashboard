@@ -2,12 +2,6 @@ require 'active_support/all'
 
 module Slack
   class << self
-    def post_deployers_for_today(deployers)
-      return unless Date.today.on_weekday?
-
-      post(text: "Today’s deployer is *<@#{deployers[0]['slackUserId']}>*.\n\nReserves: *<@#{deployers[1]['slackUserId']}>* and *<@#{deployers[2]['slackUserId']}>*")
-    end
-
     def post_confused_features(confused_features)
       return unless Date.today.on_weekday?
 
@@ -20,14 +14,22 @@ module Slack
       end
     end
 
-    def post_undeployed_prs(prs)
-      return unless Date.today.on_weekday? && prs.any?
+    def daily_deployment_message(deployers, prs)
+      return unless Date.today.on_weekday?
 
-      message = prs.reduce("The following PRs haven’t been deployed yet:\n") do |str, (author, title)|
-        str + "\n- #{title} (#{author})"
+      if prs.any?
+        message = []
+        message << "Good afternoon! Today’s deployer is *<@#{deployers[0]['slackUserId']}>*. Reserves are *<@#{deployers[1]['slackUserId']}>* and *<@#{deployers[2]['slackUserId']}>*.\n"
+        message << "The following PRs haven’t been deployed yet:\n"
+
+        prs.each do |author, title, pr_number|
+          message << "- <https://github.com/DFE-Digital/apply-for-teacher-training/pull/#{pr_number}|#{title}> (#{author})"
+        end
+      else
+        message = ["Good afternoon! Today’s deployer is *<@#{deployers[0]['slackUserId']}>*, but there's **nothing to deploy** - go out and have an ice cream, *<@#{deployers[0]['slackUserId']}>*!"]
       end
 
-      post(text: message)
+      post(text: message.join("\n"), channel: '#twd_apply_tech')
     end
 
     def post_prs_being_deployed(prs, target_environment)
