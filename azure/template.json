@@ -23,7 +23,7 @@
             "type": "secureString"
         },
         "DEPLOYERS":{
-            "type": "string"
+            "type": "array"
         },
         "SLACK_WEBHOOK_URL":{
             "type": "string"
