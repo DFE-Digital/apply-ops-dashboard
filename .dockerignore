@@ -8,3 +8,4 @@ docs
 *.gem
 *.rdb
 vendor
+.env
