@@ -11,10 +11,10 @@ build: ## builds the docker image
 .PHONY: start
 start: ## starts the container
 	docker image inspect $(DOCKER_IMAGE_NAME) 1> /dev/null || make build
-	docker run -it -p 5000:5000 --rm $(DOCKER_IMAGE_NAME)
+	docker run -it -p 5000:5000 --env-file ./.env --rm $(DOCKER_IMAGE_NAME)
 
 .PHONY: start-docker-dev
-start-dev: ## starts the dev container
+start-docker-dev: ## starts the dev container
 	docker run -it -p 5000:5000 \
 	 -v $(CURDIR):/app \
 	 -v /app/vendor \
