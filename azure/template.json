@@ -148,7 +148,7 @@
                         },
                         {
                             "name": "DEPLOYERS",
-                            "value": "[parameters('DEPLOYERS')]"
+                            "value": "[string(parameters('DEPLOYERS'))]"
                         },
                         {
                             "name": "SLACK_WEBHOOK_URL",
