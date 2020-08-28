@@ -31,7 +31,7 @@ RSpec.describe Deployers do
 
     it 'does not repeat deployer on consecutive days' do
       deployer_for_jan1 = Deployers.for_today[0]
-      File.write('yesterdays_deployer.json', deployer_for_jan1.to_json)
+      File.write(ENV['YESTERDAYS_DEPLOYER_FILE'], deployer_for_jan1.to_json)
       deployer_for_jan2 = Deployers.for_today[0]
 
       expect(deployer_for_jan1).not_to eq(deployer_for_jan2)
