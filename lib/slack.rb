@@ -8,7 +8,7 @@ module Slack
       if confused_features.empty?
         post(text: '✌️ Feature flags are consistent across Production, Staging and Sandbox')
       else
-        message = confused_features.map { |f| "- '#{f.name}'" }.join("\n")
+        message = confused_features.map { |f| "- ‘#{f.name}’" }.join("\n")
 
         post(text: "😬 Uh-oh! The following feature flags are inconsistent across Production, Staging and Sandbox:\n\n#{message}\n\n<https://apply-ops-dashboard.azurewebsites.net/features|:shipitbeaver: Check the feature flags dashboard>")
       end
@@ -26,7 +26,7 @@ module Slack
           message << "- <https://github.com/DFE-Digital/apply-for-teacher-training/pull/#{pr_number}|#{title}> (#{author})"
         end
       else
-        message = ["Good afternoon! Today’s deployer is *<@#{deployers[0]['slackUserId']}>*, but there's **nothing to deploy** - go out and have an ice cream, *<@#{deployers[0]['slackUserId']}>*!"]
+        message = ["Good afternoon! Today’s deployer is *<@#{deployers[0]['slackUserId']}>*, but there’s *nothing to deploy* - go out and have an ice cream, *<@#{deployers[0]['slackUserId']}>*!"]
       end
 
       post(text: message.join("\n"), channel: '#twd_apply_tech')
