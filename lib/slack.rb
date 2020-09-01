@@ -26,7 +26,7 @@ module Slack
           message << "- <https://github.com/DFE-Digital/apply-for-teacher-training/pull/#{pr_number}|#{title}> (#{author})"
         end
       else
-        message = ["Good afternoon! Today’s deployer is *<@#{deployers[0]['slackUserId']}>*, but there's **nothing to deploy** - go out and have an ice cream, *<@#{deployers[0]['slackUserId']}>*!"]
+        message = ["Good afternoon! Today’s deployer is *<@#{deployers[0]['slackUserId']}>*, but there's *nothing to deploy* - go out and have an ice cream, *<@#{deployers[0]['slackUserId']}>*!"]
       end
 
       post(text: message.join("\n"), channel: '#twd_apply_tech')

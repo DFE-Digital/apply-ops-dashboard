@@ -34,7 +34,7 @@ RSpec.describe Slack do
 
       Slack.daily_deployment_message(deployers, [])
 
-      expect(slack_request.with(body: hash_including(text: "Good afternoon! Today’s deployer is *\u003c@1\u003e*, but there's **nothing to deploy** - go out and have an ice cream, *\u003c@1\u003e*!")))
+      expect(slack_request.with(body: hash_including(text: "Good afternoon! Today’s deployer is *\u003c@1\u003e*, but there's *nothing to deploy* - go out and have an ice cream, *\u003c@1\u003e*!")))
         .to have_been_made
     end
 
