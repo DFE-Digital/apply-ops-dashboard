@@ -8,7 +8,7 @@
 
     <div class='govuk-body govuk-!-font-size-27'>
       last deploy at
-      <%= DateTime.strptime(latest_build.start_time, '%m/%d/%Y %H:%M%p').strftime('%l:%M%P on %A %e %b %Y') %>
+      <%= DateTime.strptime(latest_build.start_time + " UTC", '%m/%d/%Y %H:%M%p %Z').in_time_zone('Europe/London').strftime('%l:%M%P on %A %e %b %Y') %>
       by <%= latest_build.deployer_name %>
     </div>
 
