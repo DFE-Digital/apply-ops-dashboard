@@ -72,4 +72,26 @@ RSpec.describe Slack do
         .to have_been_made
     end
   end
+
+  describe '.post_prs_being_deployed' do
+    it 'posts a nice message for staging' do
+      slack_request = stub_request(:post, 'https://example.com')
+      prs = [['Duncan', 'Foo', 1], ['Theo', 'Bar', 2]]
+
+      Slack.post_prs_being_deployed(prs, 'staging')
+
+      expect(slack_request.with(body: hash_including(text: "The following PRs are being deployed to *staging*:\n\n- \u003chttps://github.com/DFE-Digital/apply-for-teacher-training/pull/1|Foo\u003e (Duncan)\n- \u003chttps://github.com/DFE-Digital/apply-for-teacher-training/pull/2|Bar\u003e (Theo)\n")))
+        .to have_been_made
+    end
+
+    it 'posts a nice message for production' do
+      slack_request = stub_request(:post, 'https://example.com')
+      prs = [['Duncan', 'Foo', 1], ['Theo', 'Bar', 2]]
+
+      Slack.post_prs_being_deployed(prs, 'production')
+
+      expect(slack_request.with(body: hash_including(text: ':ship_it_parrot: The above PRs are now being deployed to *production*')))
+        .to have_been_made
+    end
+  end
 end
