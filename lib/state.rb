@@ -76,7 +76,7 @@ private
     @qa_builds ||= begin
       params = {
         'api-version' => '5.1',
-        'definitions' => 49, # CI pipeline ID
+        'definitions' => 953, # CI pipeline ID
         'branchName' => 'refs/heads/master',
         '$top' => 50,
       }
