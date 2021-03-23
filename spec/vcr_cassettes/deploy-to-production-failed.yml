@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://dev.azure.com/dfe-ssp/Become-A-Teacher/_apis/build/builds?$top=10&api-version=5.1&definitions=325
+    uri: https://dev.azure.com/dfe-ssp/Become-A-Teacher/_apis/build/builds?$top=10&api-version=6.0&definitions=325&queryOrder=queueTimeDescending
     body:
       encoding: UTF-8
       string: ''
@@ -25,7 +25,7 @@ http_interactions:
       Content-Length:
       - '46548'
       Content-Type:
-      - application/json; charset=utf-8; api-version=5.1
+      - application/json; charset=utf-8; api-version=6.0
       Expires:
       - "-1"
       P3p:
@@ -84,7 +84,7 @@ http_interactions:
   recorded_at: Wed, 20 Nov 2019 12:14:29 GMT
 - request:
     method: get
-    uri: https://dev.azure.com/dfe-ssp/Become-A-Teacher/_apis/build/builds?$top=50&api-version=5.1&branchName=refs/heads/master&definitions=962
+    uri: https://dev.azure.com/dfe-ssp/Become-A-Teacher/_apis/build/builds?$top=20&api-version=6.0&branchName=refs/heads/master&definitions=962&queryOrder=queueTimeDescending
     body:
       encoding: UTF-8
       string: ''
@@ -107,7 +107,7 @@ http_interactions:
       Content-Length:
       - '697929'
       Content-Type:
-      - application/json; charset=utf-8; api-version=5.1
+      - application/json; charset=utf-8; api-version=6.0
       Expires:
       - "-1"
       Date:

@@ -137,7 +137,7 @@ function triggerBuild(commitSha, accessToken, deployEnv) {
   };
 
   const azurePipelinesBuildApi =
-    "https://dev.azure.com/dfe-ssp/Become-A-Teacher/_apis/build/builds?api-version=5.1";
+    "https://dev.azure.com/dfe-ssp/Become-A-Teacher/_apis/build/builds?api-version=6.0";
 
   fetch(`/webhooks/deploy-in-progress?target_environment=${deployEnv}`, requestOptions)
   .then((response) => console.log(response))
