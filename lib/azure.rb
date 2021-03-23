@@ -13,7 +13,7 @@ class Azure
                      "https://dev.azure.com/#{ORGANISATION}/#{PROJECT}/_apis#{path}", params: params
                    )
 
-    builds = JSON.parse(api_response)['value'].sort_by { |b| b['queueTime'] }.reverse
+    builds = JSON.parse(api_response)['value']
     convert(builds)
   end
 

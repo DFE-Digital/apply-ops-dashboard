@@ -16,7 +16,7 @@ class Build
   end
 
   def in_progress?
-    status == 'inProgress'
+    status == 'inProgress' || status == 'notStarted'
   end
 
   def deployer_name

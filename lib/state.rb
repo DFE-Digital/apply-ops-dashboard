@@ -75,10 +75,11 @@ private
   def qa_builds
     @qa_builds ||= begin
       params = {
-        'api-version' => '5.1',
+        'api-version' => '6.0',
         'definitions' => 962, # CI pipeline ID
         'branchName' => 'refs/heads/master',
-        '$top' => 50,
+        '$top' => 20,
+        'queryOrder' => 'queueTimeDescending',
       }
 
       Azure.get('/build/builds', params)
@@ -88,9 +89,10 @@ private
   def release_builds
     @release_builds ||= begin
       params = {
-        'api-version' => '5.1',
+        'api-version' => '6.0',
         'definitions' => 325, # release pipeline ID
         '$top' => 10,
+        'queryOrder' => 'queueTimeDescending',
       }
 
       Azure.get('/build/builds', params)
