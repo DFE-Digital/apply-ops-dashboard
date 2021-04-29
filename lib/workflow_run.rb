@@ -1,33 +1,33 @@
 class WorkflowRun
-   def initialize(workflow_run)
-     @workflow_run = workflow_run
-   end
+  def initialize(workflow_run)
+    @workflow_run = workflow_run
+  end
 
-   def queued?
+  def queued?
     workflow_run['status'] == 'queued'
-   end
+  end
 
-   def in_progress?
+  def in_progress?
     workflow_run['status'] == 'in_progress'
-   end
+  end
 
-   def succeeded?
+  def succeeded?
     workflow_run['status'] == 'completed' && workflow_run['conclusion'] == 'success'
-   end
+  end
 
-   def failed?
+  def failed?
     workflow_run['status'] == 'completed' && workflow_run['conclusion'] == 'failure'
-   end
+  end
 
-   def link
+  def link
     workflow_run['html_url']
-   end
+  end
 
-   def deployer_name
+  def deployer_name
     'GitHub'
-   end
+  end
 
-   def commit_sha
+  def commit_sha
     workflow_run['head_sha']
   end
 
@@ -36,5 +36,6 @@ class WorkflowRun
   end
 
 private
+
   attr_reader :workflow_run
 end

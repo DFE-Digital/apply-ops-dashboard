@@ -15,7 +15,7 @@ class State
   def deploy_to_production_failed?
     latest_deployment_to('production').failed?
   end
-  
+
   def deploying_to_qa?
     latest_master_build.in_progress? || latest_master_build.queued? || latest_deployment_to('qa').in_progress?
   end
@@ -65,7 +65,7 @@ class State
   rescue Octokit::NotFound
     false
   end
-  
+
 private
 
   def latest_master_build
@@ -82,8 +82,6 @@ private
       @latest_successfull_release_to_sandbox ||= sandbox_deployments.find(&:succeeded?)
     when 'production'
       @latest_successfull_release_to_production ||= production_deployments.find(&:succeeded?)
-    else
-      nil
     end
   end
 
@@ -97,8 +95,6 @@ private
       sandbox_deployments.first
     when 'production'
       production_deployments.first
-    else
-      nil
     end
   end
 
