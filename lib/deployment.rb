@@ -15,7 +15,8 @@ class Deployment
     end
  
     def status
-      statuses[0]['state']
+      return statuses[0]['state'] unless statuses[0]['state'] == 'inactive'
+      statuses[1]['state']
     end
  
     def deployer_name
