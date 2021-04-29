@@ -9,16 +9,16 @@
 
 <% if state.master_broken? %>
 <div class='govuk-grid-row'>
-  <a href='https://github.com/DFE-Digital/apply-for-postgraduate-teacher-training/commits/master' class='govuk-heading-xl app-banner app-banner--bad'>
+  <a href='<%= state.latest_build_to('qa').link %>' class='govuk-heading-xl app-banner app-banner--bad'>
     🚨 Master is broken 🚨
   </a>
 </div>
 <% end %>
 
-<% if state.deploying_to_staging? %>
+<% if state.deploying_to_sandbox? %>
 <div class='govuk-grid-row'>
-  <a href='<%= state.latest_build_to('staging').link %>' class='govuk-heading-xl app-banner app-banner--progress'>
-    🚧 <%= state.latest_build_to('staging').deployer_name %> is deploying to staging!
+  <a href='<%= state.latest_build_to('sandbox').link %>' class='govuk-heading-xl app-banner app-banner--progress'>
+    🚧 <%= state.latest_build_to('sandbox').deployer_name %> is deploying to sandbox!
   </a>
 </div>
 <% end %>
@@ -29,12 +29,12 @@
     🕺 <%= state.latest_build_to('production').deployer_name %> is deploying to production!
   </a>
 </div>
-<% elsif state.staging_and_production_not_in_sync? %>
+<% elsif state.sandbox_and_production_not_in_sync? %>
 <div class='govuk-grid-row'>
   <h2 class='govuk-heading-xl app-banner app-banner--progress'>
-    👮‍♀️ Staging and production not in sync
+    👮‍♀️ Sandbox and production not in sync
     <div class='govuk-body'>
-      This probably means that a deploy is in progress and staging is being tested
+      This probably means that a deploy is in progress and sandbox is being tested
     </div>
   </h2>
 </div>

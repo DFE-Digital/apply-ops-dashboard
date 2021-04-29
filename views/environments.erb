@@ -1,5 +1,5 @@
 <div class='govuk-grid-row'>
-  <% %w[QA Staging Production].each do |environment_name| %>
+  <% %w[QA Sandbox Production].each do |environment_name| %>
   <% environment = environment_name.downcase %>
   <% latest_build = state.latest_successfull_build_to(environment) %>
 

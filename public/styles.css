@@ -15,6 +15,10 @@ body {
   background-color: #5694ca;
 }
 
+.deploy-environment--sandbox {
+  background-color: #5694ca;
+}
+
 .deploy-environment--production {
   background-color: #1d70b8;
 }
