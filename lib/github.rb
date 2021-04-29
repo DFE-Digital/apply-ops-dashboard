@@ -1,10 +1,37 @@
 require 'octokit'
+require_relative 'deployment'
+require_relative 'workflow_run'
 
 class GitHub
   GITHUB_REPO = 'DFE-Digital/apply-for-postgraduate-teacher-training'.freeze
+  DEPLOY_WORKFLOW = 'deploy.yml'.freeze
+  BUILD_WORKFLOW = 'build.yml'.freeze
   HOTFIX_BRANCH = 'hotfix'.freeze
 
   def self.client
-    @client ||= Octokit::Client.new(access_token: ENV['GITHUB_TOKEN'])
+    @client ||= Octokit::Client.new(:access_token => ENV['GITHUB_TOKEN'])
+  end
+
+  def self.build_workflow_runs
+    @build_workflow_runs ||= begin 
+      options = {branch: 'master', per_page: 5, page: 1}
+      runs = client.workflow_runs(GITHUB_REPO, BUILD_WORKFLOW, options)
+      return nil if runs&.total_count == 0
+      runs.workflow_runs.map{ |workflow_run| WorkflowRun.new(workflow_run)}
+    end
+  end
+
+  def self.deployment_workflow_runs
+    options = {branch: 'master', per_page: 5, page: 1}
+    runs = client.workflow_runs(GITHUB_REPO, DEPLOY_WORKFLOW, options)
+    return nil if runs&.total_count == 0
+    runs.workflow_runs.map{ |workflow_run| WorkflowRun.new(workflow_run)}
+  end
+  
+  def self.deployments(environment)
+    options = {environment: environment, per_page: 10, page: 1, task: 'deploy'}
+    deployments = client.deployments(GITHUB_REPO, options)
+    return nil if deployments&.length == 0
+    deployments.map { |deployment| Deployment.new(deployment)}
   end
 end

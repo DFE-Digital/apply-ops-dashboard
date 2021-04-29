@@ -9,43 +9,43 @@ require_relative 'deployers'
 
 class State
   def master_broken?
-    qa_builds.first.failed?
+    latest_master_build.failed? || latest_deployment_to('qa').failed?
   end
 
   def deploy_to_production_failed?
-    latest_build_to('production').failed?
+    latest_deployment_to('production').failed?
+  end
+  
+  def deploying_to_qa?
+    latest_master_build.in_progress? || latest_master_build.queued? || latest_deployment_to('qa').in_progress?
   end
 
   def deploying_to_staging?
-    latest_build_to('staging').in_progress?
+    latest_deployment_to('staging').in_progress?
+  end
+
+  def deploying_to_sandbox?
+    latest_deployment_to('sandbox').in_progress?
   end
 
   def deploying_to_production?
-    latest_build_to('production').in_progress?
+    latest_deployment_to('production').in_progress?
   end
 
   def staging_and_production_not_in_sync?
-    latest_successfull_build_to('staging').commit_sha != latest_successfull_build_to('production').commit_sha
+    latest_successfull_deployment_to('staging').commit_sha != latest_successfull_deployment_to('production').commit_sha
+  end
+
+  def sandbox_and_production_not_in_sync?
+    latest_successfull_deployment_to('sandbox').commit_sha != latest_successfull_deployment_to('production').commit_sha
   end
 
   def latest_build_to(environment)
-    return qa_builds.first if environment == 'qa'
-
-    release_builds.select(&:params).find do |build|
-      build.params["deploy_#{environment}"].to_s == 'true'
-    end
+    latest_deployment_to(environment)
   end
 
   def latest_successfull_build_to(environment)
-    return latest_successfull_build_to_qa if environment == 'qa'
-
-    release_builds.select(&:params).find do |build|
-      build.succeeded? && build.params["deploy_#{environment}"].to_s == 'true'
-    end
-  end
-
-  def deploying_to_qa?
-    qa_builds.first.in_progress?
+    latest_successfull_deployment_to(environment)
   end
 
   def deployers_for_today
@@ -65,37 +65,56 @@ class State
   rescue Octokit::NotFound
     false
   end
-
+  
 private
 
-  def latest_successfull_build_to_qa
-    @latest_successfull_build_to_qa ||= qa_builds.find(&:succeeded?)
+  def latest_master_build
+    GitHub.build_workflow_runs.first
   end
 
-  def qa_builds
-    @qa_builds ||= begin
-      params = {
-        'api-version' => '6.0',
-        'definitions' => 962, # CI pipeline ID
-        'branchName' => 'refs/heads/master',
-        '$top' => 20,
-        'queryOrder' => 'queueTimeDescending',
-      }
-
-      Azure.get('/build/builds', params)
+  def latest_successfull_deployment_to(environment)
+    case environment
+    when 'qa'
+      @latest_successfull_release_to_qa ||= qa_deployments.find(&:succeeded?)
+    when 'staging'
+      @latest_successfull_release_to_staging ||= staging_deployments.find(&:succeeded?)
+    when 'sandbox'
+      @latest_successfull_release_to_sandbox ||= sandbox_deployments.find(&:succeeded?)
+    when 'production'
+      @latest_successfull_release_to_production ||= production_deployments.find(&:succeeded?)
+    else
+      nil
     end
   end
 
-  def release_builds
-    @release_builds ||= begin
-      params = {
-        'api-version' => '6.0',
-        'definitions' => 325, # release pipeline ID
-        '$top' => 10,
-        'queryOrder' => 'queueTimeDescending',
-      }
-
-      Azure.get('/build/builds', params)
+  def latest_deployment_to(environment)
+    case environment
+    when 'qa'
+      qa_deployments.first
+    when 'staging'
+      staging_deployments.first
+    when 'sandbox'
+      sandbox_deployments.first
+    when 'production'
+      production_deployments.first
+    else
+      nil
     end
+  end
+
+  def qa_deployments
+    @qa_deployments ||= GitHub.deployments('qa')
+  end
+
+  def staging_deployments
+    @staging_deployments ||= GitHub.deployments('staging')
+  end
+
+  def sandbox_deployments
+    @sandbox_deployments ||= GitHub.deployments('sandbox')
+  end
+
+  def production_deployments
+    @production_deployments ||= GitHub.deployments('production')
   end
 end
