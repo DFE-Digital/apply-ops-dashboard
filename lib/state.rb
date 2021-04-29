@@ -21,15 +21,15 @@ class State
   end
 
   def deploying_to_staging?
-    latest_deployment_to('staging').in_progress?
+    latest_deployment_to('staging').in_progress? || latest_deployment_to('staging').queued?
   end
 
   def deploying_to_sandbox?
-    latest_deployment_to('sandbox').in_progress?
+    latest_deployment_to('sandbox').in_progress? || latest_deployment_to('sandbox').queued?
   end
 
   def deploying_to_production?
-    latest_deployment_to('production').in_progress?
+    latest_deployment_to('production').in_progress? || latest_deployment_to('production').queued?
   end
 
   def staging_and_production_not_in_sync?

@@ -37,4 +37,12 @@ class GitHub
 
     deployments.map { |deployment| Deployment.new(deployment) }
   end
+
+  def self.trigger_deploy_workflow_run(github_client, commit_sha, environment)
+    inputs = { sha: commit_sha }
+    inputs[environment] = 'true'
+    options = { inputs: inputs }
+
+    github_client.workflow_dispatch(GITHUB_REPO, DEPLOY_WORKFLOW, 'refs/heads/master', options)
+  end
 end

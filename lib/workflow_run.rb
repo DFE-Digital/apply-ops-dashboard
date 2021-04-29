@@ -4,7 +4,7 @@ class WorkflowRun
   end
 
   def queued?
-    workflow_run['status'] == 'queued'
+    workflow_run['status'] == 'queued' || workflow_run['status'] == 'waiting'
   end
 
   def in_progress?

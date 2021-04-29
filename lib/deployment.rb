@@ -45,7 +45,7 @@ class Deployment
   end
 
   def queued?
-    status == 'queued' || status == 'pending'
+    status == 'queued' || status == 'pending' || status == 'waiting'
   end
 
   def failed?
