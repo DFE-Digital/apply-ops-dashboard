@@ -13,13 +13,11 @@ class GitHub
   end
 
   def self.build_workflow_runs
-    @build_workflow_runs ||= begin
-      options = { branch: 'master', per_page: 5, page: 1 }
-      runs = client.workflow_runs(GITHUB_REPO, BUILD_WORKFLOW, options)
-      return nil if runs&.total_count&.zero?
+    options = { branch: 'master', per_page: 5, page: 1 }
+    runs = client.workflow_runs(GITHUB_REPO, BUILD_WORKFLOW, options)
+    return nil if runs&.total_count&.zero?
 
-      runs.workflow_runs.map { |workflow_run| WorkflowRun.new(workflow_run) }
-    end
+    runs.workflow_runs.map { |workflow_run| WorkflowRun.new(workflow_run) }
   end
 
   def self.deployment_workflow_runs

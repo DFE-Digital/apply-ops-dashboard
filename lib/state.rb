@@ -17,7 +17,7 @@ class State
   end
 
   def deploying_to_qa?
-    latest_master_build.in_progress? || latest_master_build.queued? || latest_deployment_to('qa').in_progress?
+    latest_master_build.in_progress? || latest_master_build.queued? || latest_deployment_to('qa').in_progress? || latest_deployment_to('qa').queued?
   end
 
   def deploying_to_staging?
