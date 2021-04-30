@@ -4,7 +4,10 @@
   let deploy = urlParams.get("deploy");
   let deployEnv = urlParams.get("environment");
   let commitSha = urlParams.get("commit_sha");
-  if (login === "success" && deploy === "true" && commitSha !== undefined && commitSha !== '' && deployEnv !== undefined && deployEnv !== '') {
+  let state = urlParams.get("state");
+  if (login === "success" && deploy === "true" && state == 'KuVaJNysxgQy'
+        && commitSha !== undefined && commitSha !== '' 
+        && deployEnv !== undefined && deployEnv !== '') {
     onAfterSuccessLogin(commitSha, deployEnv);
   }
 })();
@@ -58,7 +61,7 @@ function gitHubAuth(commitSha, deployEnv) {
   const headers = new Headers();
   headers.append("Accept", "*/*");
 
-  let callbackUri = `http://localhost:5000/login?environment=${deployEnv}&commit_sha=${commitSha}`;
+  let callbackUri = `${window.location.origin}/login?environment=${deployEnv}&commit_sha=${commitSha}`;
   let gitHubAuthUrl = new URL("https://github.com/login/oauth/authorize");
   gitHubAuthUrl.searchParams.append("client_id", "62a9613d9f0b2b073dce");
   gitHubAuthUrl.searchParams.append("redirect_uri", callbackUri);
