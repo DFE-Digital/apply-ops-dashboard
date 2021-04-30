@@ -8,7 +8,7 @@ class WorkflowRun
   end
 
   def in_progress?
-    workflow_run['status'] == 'in_progress'
+    workflow_run['status'] == 'in_progress' || workflow_run['conclusion'].nil?
   end
 
   def succeeded?
