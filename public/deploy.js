@@ -18,8 +18,9 @@ function onDeployButtonClick(commitSha, deployEnv) {
 
 function onAfterSuccessLogin(commitSha, deployEnv) {
   const rowId = `${deployEnv}-deploy`;
-  const progressLabel = getProgressLabelNode();
   document.getElementById(rowId).querySelector("button").disabled = "disabled";
+  
+  const progressLabel = getProgressLabelNode();
   document.getElementById(rowId).appendChild(progressLabel);
   const inProgressTimer = setInterval(
     (lbl, initialText) => {
