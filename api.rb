@@ -23,8 +23,9 @@ class MyApi < Sinatra::Base
     triggered = GitHub.trigger_deploy_workflow_run(github_client, cookies['commit_sha'], cookies['environment'])
 
     halt 500 unless triggered
-    cookies.clear
     Notify.prs_being_deployed(cookies['environment'])
+    cookies.clear
+
     204
   end
 end
