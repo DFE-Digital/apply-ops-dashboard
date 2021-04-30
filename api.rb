@@ -9,6 +9,7 @@ require_relative 'lib/github'
 
 class MyApi < Sinatra::Base
   helpers Sinatra::Cookies
+  set :cookie_options, path: '/'
 
   post '/trigger-deployment' do
     halt 401 if cookies['code'].nil?
@@ -22,6 +23,7 @@ class MyApi < Sinatra::Base
     triggered = GitHub.trigger_deploy_workflow_run(github_client, cookies['commit_sha'], cookies['environment'])
 
     halt 500 unless triggered
+    cookies.clear
     Notify.prs_being_deployed(cookies['environment'])
     204
   end

@@ -5,6 +5,8 @@ require_relative 'lib/features'
 
 class MyApp < Sinatra::Base
   helpers Sinatra::Cookies
+  set :cookie_options, path: '/'
+
   get '/' do
     erb :index, locals: { state: State.new }
   end
