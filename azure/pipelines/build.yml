@@ -22,9 +22,9 @@ stages:
       displayName: Set Build Number
       
     - task: UseRubyVersion@0
-      displayName: Use Ruby Version 2.7.2
+      displayName: Use Ruby Version 2.7.3
       inputs:
-        versionSpec: '>= 2.7'
+        versionSpec: '>= 2.7.3'
     
     - script: |
         ruby --version

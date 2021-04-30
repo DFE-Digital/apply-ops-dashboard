@@ -1,12 +1,10 @@
-FROM ruby:2.7.2-alpine3.12
+FROM ruby:2.7.3-alpine3.13
 
 WORKDIR /app
 
 COPY . .
 
-ENV AZURE_ACCESS_TOKEN= \
-    AZURE_USERNAME= \
-    GITHUB_TOKEN=
+ENV GITHUB_TOKEN=
 
 RUN apk update && apk upgrade && apk --update add \
     build-base tzdata && \
