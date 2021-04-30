@@ -21,7 +21,7 @@ class Deployment
   end
 
   def deployer_name
-    'GitHub'
+    user['name'] || user['login']
   end
 
   def branch_name
@@ -70,5 +70,9 @@ private
 
   def statuses
     @statuses ||= GitHub.client.get deployment['statuses_url']
+  end
+
+  def user
+    @user ||= GitHub.client.get deployment['creator']['url']
   end
 end
