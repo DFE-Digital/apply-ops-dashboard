@@ -82,8 +82,9 @@ stages:
              deploymentName: '$(Build.BuildNumber)'
              overrideParameters: '-subscriptionPrefix "$(subscriptionPrefix)"
               -apply-ops-dashboard-docker-image "dfedigital/apply-ops-dashboard:$(Build.BuildNumber)"
-              -AZURE_ACCESS_TOKEN "$(AZURE_ACCESS_TOKEN)"
-              -AZURE_USERNAME "$(AZURE_USERNAME)"
               -GITHUB_TOKEN "$(GITHUB_TOKEN)"
+              -GITHUB_CLIENT_ID "$(GITHUB_CLIENT_ID)"
+              -GITHUB_CLIENT_SECRET "$(GITHUB_CLIENT_SECRET)"
+              -GITHUB_STATE "$(GITHUB_STATE)"
               -DEPLOYERS $(DEPLOYERS)
               -SLACK_WEBHOOK_URL "$(SLACK_WEBHOOK_URL)"'

@@ -2,9 +2,9 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "subscriptionPrefix":{
+        "subscriptionPrefix": {
             "type": "string",
-            "allowedValues": ["s106d01", "s106d02", "s106t01", "s106t02", "s106p01"]
+            "allowedValues": [ "s106d01", "s106d02", "s106t01", "s106t02", "s106p01" ]
         },
         "apply-ops-dashboard-site-name": {
             "defaultValue": "apply-ops-dashboard",
@@ -13,19 +13,22 @@
         "apply-ops-dashboard-docker-image": {
             "type": "string"
         },
-        "AZURE_ACCESS_TOKEN":{
+        "GITHUB_CLIENT_ID": {
             "type": "secureString"
         },
-        "AZURE_USERNAME":{
+        "GITHUB_CLIENT_SECRET": {
             "type": "secureString"
         },
-        "GITHUB_TOKEN":{
+        "GITHUB_TOKEN": {
             "type": "secureString"
         },
-        "DEPLOYERS":{
+        "GITHUB_STATE": {
+            "type": "secureString"
+        },
+        "DEPLOYERS": {
             "type": "array"
         },
-        "SLACK_WEBHOOK_URL":{
+        "SLACK_WEBHOOK_URL": {
             "type": "string"
         }
     },
@@ -101,63 +104,166 @@
                 "httpsOnly": true,
                 "redundancyMode": "None",
                 "siteConfig": {
-                    "appSettings":[
-                        {
-                            "name": "FUNCTIONS_EXTENSION_VERSION",
-                            "value": "~3"
-                        },
-                        {
-                            "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
-                            "value": "false"
-                        },
-                        {
-                            "name": "WEBSITE_TIME_ZONE",
-                            "value": "Europe/London"
-                        },
-                        {
-                            "name": "WEBSITES_PORT",
-                            "value": "5000"
-                        },
-                        {
-                            "name": "AzureWebJobsStorage",
-                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
-                        },
-                        {
-                            "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
-                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
-                        },
-                        {
-                            "name": "WEBSITE_CONTENTSHARE",
-                            "value": "[concat(toLower(parameters('apply-ops-dashboard-site-name')), 'f450')]"
-                        },
-                        {
-                            "name": "DOCKER_REGISTRY_SERVER_URL",
-                            "value": "https://index.docker.io"
-                        },
-                        {
-                            "name": "AZURE_ACCESS_TOKEN",
-                            "value": "[parameters('AZURE_ACCESS_TOKEN')]"
-                        },
-                        {
-                            "name": "AZURE_USERNAME",
-                            "value": "[parameters('AZURE_USERNAME')]"
-                        },
-                        {
-                            "name": "GITHUB_TOKEN",
-                            "value": "[parameters('GITHUB_TOKEN')]"
-                        },
-                        {
-                            "name": "DEPLOYERS",
-                            "value": "[string(parameters('DEPLOYERS'))]"
-                        },
-                        {
-                            "name": "SLACK_WEBHOOK_URL",
-                            "value": "[parameters('SLACK_WEBHOOK_URL')]"
-                        },
-                        {
-                            "name" : "RACK_ENV",
-                            "value": "production"
-                        }
+                    "appSettings": [
+                       {
+                           "name": "FUNCTIONS_EXTENSION_VERSION",
+                           "value": "~3"
+                       },
+                       {
+                           "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+                           "value": "false"
+                       },
+                       {
+                           "name": "WEBSITE_TIME_ZONE",
+                           "value": "Europe/London"
+                       },
+                       {
+                           "name": "WEBSITES_PORT",
+                           "value": "5000"
+                       },
+                       {
+                           "name": "AzureWebJobsStorage",
+                           "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
+                       },
+                       {
+                           "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+                           "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
+                       },
+                       {
+                           "name": "WEBSITE_CONTENTSHARE",
+                           "value": "[concat(toLower(parameters('apply-ops-dashboard-site-name')), 'f450')]"
+                       },
+                       {
+                           "name": "DOCKER_REGISTRY_SERVER_URL",
+                           "value": "https://index.docker.io"
+                       },
+                       {
+                           "name": "GITHUB_CLIENT_ID",
+                           "value": "[parameters('GITHUB_CLIENT_ID')]"
+                       },
+                       {
+                           "name": "GITHUB_CLIENT_SECRET",
+                           "value": "[parameters('GITHUB_CLIENT_SECRET')]"
+                       },
+                       {
+                           "name": "GITHUB_TOKEN",
+                           "value": "[parameters('GITHUB_TOKEN')]"
+                       },
+                       {
+                           "name": "GITHUB_STATE",
+                           "value": "[parameters('GITHUB_STATE')]"
+                       },
+                       {
+                           "name": "DEPLOYERS",
+                           "value": "[string(parameters('DEPLOYERS'))]"
+                       },
+                       {
+                           "name": "SLACK_WEBHOOK_URL",
+                           "value": "[parameters('SLACK_WEBHOOK_URL')]"
+                       },
+                       {
+                           "name": "RACK_ENV",
+                           "value": "production"
+                       }
+                    ],
+                    "linuxFxVersion": "[concat('DOCKER|', parameters('apply-ops-dashboard-docker-image'))]",
+                    "minTlsVersion": "1.2",
+                    "http20Enabled": true,
+                    "ftpsState": "Disabled",
+                    "reservedInstanceCount": 1
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/slots",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('apply-ops-dashboard-site-name'),'/paas')]",
+            "location": "[resourceGroup().location]",
+            "kind": "functionapp,linux,container",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('apply-ops-dashboard-site-name'))]"
+            ],
+            "properties": {
+                "enabled": true,
+                "reserved": true,
+                "name": "[parameters('apply-ops-dashboard-site-name')]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(parameters('apply-ops-dashboard-site-name'), '.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(parameters('apply-ops-dashboard-site-name'), '.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "httpsOnly": true,
+                "redundancyMode": "None",
+                "siteConfig": {
+                    "appSettings": [
+                      {
+                          "name": "FUNCTIONS_EXTENSION_VERSION",
+                          "value": "~3"
+                      },
+                      {
+                          "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+                          "value": "false"
+                      },
+                      {
+                          "name": "WEBSITE_TIME_ZONE",
+                          "value": "Europe/London"
+                      },
+                      {
+                          "name": "WEBSITES_PORT",
+                          "value": "5000"
+                      },
+                      {
+                          "name": "AzureWebJobsStorage",
+                          "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
+                      },
+                      {
+                          "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+                          "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
+                      },
+                      {
+                          "name": "WEBSITE_CONTENTSHARE",
+                          "value": "[concat(toLower(parameters('apply-ops-dashboard-site-name')), 'f450')]"
+                      },
+                      {
+                          "name": "DOCKER_REGISTRY_SERVER_URL",
+                          "value": "https://index.docker.io"
+                      },
+                      {
+                          "name": "GITHUB_CLIENT_ID",
+                          "value": "[parameters('GITHUB_CLIENT_ID')]"
+                      },
+                      {
+                          "name": "GITHUB_CLIENT_SECRET",
+                          "value": "[parameters('GITHUB_CLIENT_SECRET')]"
+                      },
+                      {
+                          "name": "GITHUB_TOKEN",
+                          "value": "[parameters('GITHUB_TOKEN')]"
+                      },
+                      {
+                          "name": "GITHUB_STATE",
+                          "value": "[parameters('GITHUB_STATE')]"
+                      },
+                      {
+                          "name": "DEPLOYERS",
+                          "value": "[string(parameters('DEPLOYERS'))]"
+                      },
+                      {
+                          "name": "SLACK_WEBHOOK_URL",
+                          "value": "[parameters('SLACK_WEBHOOK_URL')]"
+                      },
+                      {
+                          "name": "RACK_ENV",
+                          "value": "production"
+                      }
                     ],
                     "linuxFxVersion": "[concat('DOCKER|', parameters('apply-ops-dashboard-docker-image'))]",
                     "minTlsVersion": "1.2",
