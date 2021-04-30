@@ -17,6 +17,6 @@ class MyApp < Sinatra::Base
 
   get '/login' do
     params.each { |k, v| cookies[k] = v }
-    redirect "/?login=success&deploy=true&environment=#{params[:environment]}&commit_sha=#{params[:commit_sha]}"
+    redirect "/?login=success&deploy=true&environment=#{params[:environment]}&commit_sha=#{params[:commit_sha]}&state=#{params[:state]}"
   end
 end
