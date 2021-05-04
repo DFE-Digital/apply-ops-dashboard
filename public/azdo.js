@@ -116,7 +116,7 @@ function triggerBuild(commitSha, accessToken, deployEnv) {
 
   const parameters = {
     deploy_production: deployToProduction,
-    deploy_sandbox: deployToProduction,
+    deploy_sandbox: false
     deploy_staging: !deployToProduction,
   };
 
