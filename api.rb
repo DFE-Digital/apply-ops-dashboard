@@ -1,27 +1,31 @@
 require 'sinatra'
+require 'sinatra/cookies'
 require 'jwt'
 require 'http'
+require 'octokit'
 require 'active_support/core_ext/hash/indifferent_access'
 require_relative 'lib/notify'
+require_relative 'lib/github'
 
 class MyApi < Sinatra::Base
-  before do
-    halt 401 if request.env['HTTP_AUTHORIZATION'].nil?
-    access_token = request.env['HTTP_AUTHORIZATION'].slice(7..-1)
-    JWT.decode access_token, nil, true, { algorithm: 'RS256', jwks: ->(options) { jwks(options) } }
-  rescue StandardError
-    halt 403
-  end
+  helpers Sinatra::Cookies
+  set :cookie_options, path: '/'
 
-  post '/deploy-in-progress' do
-    halt 404 if params['target_environment'].nil?
-    halt 422 if params['target_environment'] != 'staging' && params['target_environment'] != 'production'
-    Notify.prs_being_deployed(params['target_environment'])
+  post '/trigger-deployment' do
+    halt 401 if cookies['code'].nil?
+    halt 401 if cookies['state'].nil? || cookies['state'] != ENV['GITHUB_STATE']
+    halt 422 if cookies['environment'] != 'sandbox' && cookies['environment'] != 'production'
+
+    response = Octokit.exchange_code_for_token(cookies['code'], ENV['GITHUB_CLIENT_ID'], ENV['GITHUB_CLIENT_SECRET'])
+    halt 403 if response.error?
+
+    github_client = Octokit::Client.new(access_token: response.access_token)
+    triggered = GitHub.trigger_deploy_workflow_run(github_client, cookies['commit_sha'], cookies['environment'])
+
+    halt 500 unless triggered
+    Notify.prs_being_deployed(cookies['environment'])
+    cookies.clear
+
     204
-  end
-
-  def jwks(options)
-    @jwks = nil if options[:invalidate] # need to reload the keys
-    @jwks ||= JSON.parse(HTTP.get('https://login.microsoftonline.com/9c7d9dd3-840c-4b3f-818e-552865082e16/discovery/v2.0/keys')).with_indifferent_access
   end
 end

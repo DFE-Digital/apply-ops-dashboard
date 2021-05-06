@@ -13,7 +13,7 @@ namespace :slack do
 
   desc 'Post PRs being deployed'
   task :post_prs_being_deployed do
-    Notify.prs_being_deployed('staging')
+    Notify.prs_being_deployed('sandbox')
     Notify.prs_being_deployed('production')
   end
 end

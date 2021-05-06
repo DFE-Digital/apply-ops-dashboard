@@ -36,7 +36,7 @@ module Slack
       if target_environment == 'production'
         message = ':ship_it_parrot: The above PRs are now being deployed to *production*'
       else
-        message = "The following PRs are being deployed to *staging*:\n\n"
+        message = "The following PRs are being deployed to *#{target_environment}*:\n\n"
 
         prs.map do |author, title, pr_number|
           message << "- <https://github.com/DFE-Digital/apply-for-teacher-training/pull/#{pr_number}|#{title}> (#{author})\n"

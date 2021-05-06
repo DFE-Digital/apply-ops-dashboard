@@ -6,10 +6,18 @@ RSpec.describe State do
       VCR.use_cassette('deploy-to-production-failed') do
         state = State.new
 
-        expect(state.master_broken?).to be false
+        expect(state.master_broken?).to be true
         expect(state.deploy_to_production_failed?).to be true
         expect(state.deploying_to_production?).to be false
-        expect(state.latest_successfull_build_to('production').commit_sha).to eql('1caecfa6b960213e33b30a4fc37d9d5637afa47d')
+      end
+    end
+  end
+
+  context 'a latest successfull deploy to production' do
+    it 'reports the correct data' do
+      VCR.use_cassette('latest-successfull-deploy') do
+        state = State.new
+        expect(state.latest_successfull_build_to('production').commit_sha).to eql('2992892343623e101efd9e6686229cfc066ac6c5')
       end
     end
   end
