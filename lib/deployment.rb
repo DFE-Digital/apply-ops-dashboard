@@ -15,6 +15,7 @@ class Deployment
   end
 
   def status
+    return 'unknown'.freeze if statuses.nil? || statuses.length.zero?
     return statuses[0]['state'] unless statuses[0]['state'] == 'inactive'
 
     statuses[1]['state']
