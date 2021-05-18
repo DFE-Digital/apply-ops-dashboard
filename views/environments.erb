@@ -2,6 +2,7 @@
   <% %w[QA Sandbox Production].each do |environment_name| %>
   <% environment = environment_name.downcase %>
   <% latest_build = state.latest_successfull_build_to(environment) %>
+  <% current_commit_sha = state.current_commit_sha_in(environment) %>
 
   <div class='deploy-environment govuk-grid-column-one-third deploy-environment--<%= environment %>'>
     <h2 class='govuk-heading-xl govuk-!-margin-bottom-3'><%= environment_name %></h2>
@@ -13,7 +14,7 @@
     </div>
 
     <div class='govuk-body'>
-      Current version: <code><a href='<%= "https://github.com/DFE-Digital/apply-for-postgraduate-teacher-training/commit/#{latest_build.commit_sha}" %>'><%= latest_build.commit_sha[0..6] %></a></code>
+      Current version: <code><a href='<%= "https://github.com/DFE-Digital/apply-for-postgraduate-teacher-training/commit/#{current_commit_sha}" %>'><%= current_commit_sha[0..6] %></a></code>
     </div>
 
     <%= erb :deploy, locals: { environment: environment, state: state, latest_build: latest_build } %>
