@@ -66,6 +66,11 @@ class State
     false
   end
 
+  def current_commit_sha_in(environment)
+    env_suffix = environment == 'production' ? 'prod' : environment
+    HTTP.get("https://apply-#{env_suffix}.london.cloudapps.digital/check").body.to_s.strip
+  end
+
 private
 
   def latest_master_build
