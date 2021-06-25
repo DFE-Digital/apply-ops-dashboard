@@ -8,8 +8,8 @@ require_relative 'diff'
 require_relative 'deployers'
 
 class State
-  def master_broken?
-    latest_master_build.failed? || latest_deployment_to('qa').failed?
+  def main_broken?
+    latest_main_build.failed? || latest_deployment_to('qa').failed?
   end
 
   def deploy_to_production_failed?
@@ -17,7 +17,7 @@ class State
   end
 
   def deploying_to_qa?
-    latest_master_build.in_progress? || latest_master_build.queued? || latest_deployment_to('qa').in_progress? || latest_deployment_to('qa').queued?
+    latest_main_build.in_progress? || latest_main_build.queued? || latest_deployment_to('qa').in_progress? || latest_deployment_to('qa').queued?
   end
 
   def deploying_to_staging?
@@ -73,7 +73,7 @@ class State
 
 private
 
-  def latest_master_build
+  def latest_main_build
     GitHub.build_workflow_runs.first
   end
 
