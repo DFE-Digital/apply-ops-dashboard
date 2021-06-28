@@ -3,17 +3,17 @@
 <% current_commit_in_sandbox = state.current_commit_sha_in('sandbox') %>
 <% current_commit_in_production = state.current_commit_sha_in('prod') %>
 <% if environment == 'qa' %>
-  <% prs = Diff.pull_requests_between('master', current_commit_in_qa) %>
+  <% prs = Diff.pull_requests_between('main', current_commit_in_qa) %>
 
   <% if prs.size == 0 %>
     <div class='govuk-body'>
-      👌 All of the PRs on master are deployed
+      👌 All of the PRs on main are deployed
     </div>
   <% else %>
-    <div class='govuk-heading-s'><%= prs.size %> PRs behind master</div>
+    <div class='govuk-heading-s'><%= prs.size %> PRs behind main</div>
 
     <div class='govuk-body'>
-      The following PRs haven't been deployed to QA yet (<a href='<%= latest_build.diff_against_url('master') %>' class='govuk-!-font-size-19'>see the full diff of QA against master</a>):
+      The following PRs haven't been deployed to QA yet (<a href='<%= latest_build.diff_against_url('main') %>' class='govuk-!-font-size-19'>see the full diff of QA against main</a>):
     </div>
 
     <ol class='govuk-list govuk-list--number govuk-body-s'>

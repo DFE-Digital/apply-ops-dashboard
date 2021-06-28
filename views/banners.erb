@@ -7,10 +7,10 @@
 </div>
 <% end %>
 
-<% if state.master_broken? %>
+<% if state.main_broken? %>
 <div class='govuk-grid-row'>
   <a href='<%= state.latest_build_to('qa').link %>' class='govuk-heading-xl app-banner app-banner--bad'>
-    🚨 Master is broken 🚨
+    🚨 Main is broken 🚨
   </a>
 </div>
 <% end %>
