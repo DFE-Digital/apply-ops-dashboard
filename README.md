@@ -49,4 +49,4 @@ bundle exec rubocop
 
 ## Deployment
 
-Auto-deploy to Heroku is set up from master.
+Auto-deploy to Heroku is set up from main.
