@@ -6,7 +6,7 @@ RSpec.describe State do
       VCR.use_cassette('deploy-to-production-failed') do
         state = State.new
 
-        expect(state.master_broken?).to be true
+        expect(state.main_broken?).to be true
         expect(state.deploy_to_production_failed?).to be true
         expect(state.deploying_to_production?).to be false
       end
