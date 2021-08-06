@@ -52,7 +52,7 @@ RSpec.describe Slack do
   describe '.post_confused_features' do
     it 'sends a message when features are confused' do
       confused_features = [
-        Feature.new(name: 'Wonky feature', production: true, staging: false, sandbox: false, qa: false),
+        Feature.new(name: 'Wonky feature', type: 'invariant', production: true, staging: false, sandbox: false, qa: false),
       ]
 
       slack_request = stub_request(:post, 'https://example.com')
