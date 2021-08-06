@@ -1,9 +1,10 @@
 class Feature
-  attr_reader :name, :production, :staging, :sandbox, :qa
+  attr_reader :name, :type, :production, :staging, :sandbox, :qa
 
   # rubocop:disable Naming/MethodParameterName
-  def initialize(name:, production:, staging:, sandbox:, qa:)
+  def initialize(name:, type:, production:, staging:, sandbox:, qa:)
     @name = name
+    @type = type
     @production = production
     @sandbox = sandbox
     @staging = staging
@@ -12,7 +13,9 @@ class Feature
   # rubocop:enable Naming/MethodParameterName
 
   def state
-    if [production, sandbox, staging, qa].uniq == %w[active]
+    if type == 'variant'
+      'ok'
+    elsif [production, sandbox, staging, qa].uniq == %w[active]
       'ok'
     elsif [production, sandbox, staging, qa].uniq == %w[inactive]
       'ok'
