@@ -8,10 +8,14 @@ class Features
 
     feature_ids.map do |id|
       # get the name of the feature from whichever environment knows it
-      name = [prod, staging, sandbox, qa].map { |env| env.dig('feature_flags', id, 'name') }.reject(&:nil?).first
+      fields = [prod, staging, sandbox, qa].each_with_object({}) do |env, hash|
+        hash[:name] ||= env.dig('feature_flags', id, 'name')
+        hash[:type] ||= env.dig('feature_flags', id, 'type')
+      end
 
       Feature.new(
-        name: name,
+        name: fields[:name],
+        type: fields[:type],
         production: bool_to_state(prod.dig('feature_flags', id, 'active')),
         staging: bool_to_state(staging.dig('feature_flags', id, 'active')),
         sandbox: bool_to_state(sandbox.dig('feature_flags', id, 'active')),
