@@ -18,4 +18,4 @@ RUN apk update && apk upgrade && apk --update add \
     apk del build-base
 
 # this starts the clockwork process as a background daemon and server in the foreground
-CMD YESTERDAYS_DEPLOYER_FILE='/app/yesterdays_deployer.json' bundle exec clockworkd -c clock.rb start && YESTERDAYS_DEPLOYER_FILE='yesterdays_deployer.json' bundle exec rackup --host 0.0.0.0 -p 5000
+CMD bundle exec clockworkd -c clock.rb start && bundle exec rackup --host 0.0.0.0 -p 5000
