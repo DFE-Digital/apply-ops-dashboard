@@ -41,18 +41,6 @@
         <li><%= title %> (<%= author %>)</li>
       <% end %>
     </ol>
-
-    <div class="govuk-grid-row" id="sandbox-deploy">
-      <div class="govuk-grid-column-three-quarters">
-        <label class="govuk-visually-hidden" for="sandbox-deploy-input">Commit SHA for the sandbox deploy</label>
-        <input id="sandbox-deploy-input" value='<%= current_commit_in_qa %>' class='govuk-input' readonly>
-      </div>
-      <div class="govuk-grid-column-one-quarter">
-        <button data-prevent-double-click="true" class="govuk-button" data-module="govuk-button" onclick="onDeployButtonClick('<%= current_commit_in_qa %>', 'sandbox');" style="width: 100%">
-           Deploy 🚢
-        </button>
-      </div>
-    </div>
   <% end %>
 <% elsif environment == 'production' %>
   <% prs = Diff.pull_requests_between(current_commit_in_sandbox, current_commit_in_production) %>
@@ -73,17 +61,5 @@
         <li><%= title %> (<%= author %>)</li>
       <% end %>
     </ol>
-
-    <div class="govuk-grid-row" id="production-deploy">
-      <div class="govuk-grid-column-three-quarters">
-        <label class="govuk-visually-hidden" for="sandbox-deploy-input">Commit SHA for the production deploy</label>
-        <input id="production-deploy-input" value='<%= current_commit_in_sandbox %>' class='govuk-input' readonly>
-      </div>
-      <div class="govuk-grid-column-one-quarter">
-        <button data-prevent-double-click="true" class="govuk-button" data-module="govuk-button" onclick="onDeployButtonClick('<%= current_commit_in_sandbox %>', 'production');" style="width: 100%">
-           Deploy 🚢
-        </button>
-      </div>
-    </div>
   <% end %>
 <% end %>
