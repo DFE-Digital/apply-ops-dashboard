@@ -48,7 +48,7 @@ module Slack
 
   private
 
-    def post(text: '', channel: '#twd_apply_tech')
+    def post(text: '', channel: '#twd_find_and_apply_tech')
       payload = {
         username: 'Apply ops dashboard',
         icon_emoji: ':train-beaver:',
